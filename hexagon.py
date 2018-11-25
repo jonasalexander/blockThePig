@@ -1,5 +1,7 @@
 import Tkinter as tk
 
+from util import *
+
 class Point():
 
 	def __init__(self, x, y):
@@ -12,12 +14,12 @@ class Point():
 class Hexagon():
 	sideLength = 20
 
-	def __init__(self, canvas, center, state):
+	def __init__(self, canvas, center, stateInt):
 		# Draw isosceles hexagon
 		self.canvas = canvas
 		self.centerX = center.x
 		self.centerY = center.y
-		self.state = state
+		self.state = STATES[stateInt]
 
 		if self.state == 'pig':
 			fill = 'red'
