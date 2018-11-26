@@ -24,8 +24,13 @@ class simplePigAgent(pigAgent):
 
 		GS.movePig(move)
 		
+class minimaxPigAgent(pigAgent):
+	def __init__(self):
+		return
 
-			
+	def play(self, GS):
+
+		return
 
 
 	

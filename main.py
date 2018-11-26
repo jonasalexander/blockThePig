@@ -14,7 +14,7 @@ root.withdraw() # Make sure no window drawn for root Tk() instance
 def cleanUp():
 	root.destroy()
 
-def main(gameType):
+def main(gameType, numStoneAgents):
 
 	# Tkinter window config
 	window = tk.Toplevel()
@@ -30,7 +30,7 @@ def main(gameType):
 
 	# Simple Pig Agent Gameplay
 	if gameType == 'simple':
-		def update():
+		def update(players, turn):
 			if GS.isEscaped():
 				print 'Pig escaped!'
 				return
@@ -38,21 +38,39 @@ def main(gameType):
 			if GS.isCaptured():
 				print 'Pig is captured'
 				return
-
-			if GS.pigTurn:
-				a = pigAgent.simplePigAgent()
-			else:
-				a = stoneAgent.simpleStoneAgent()
 			
-			a.play(GS)
-			
+			players[turn].play(GS)
 			# switch player
-			GS.pigTurn = not GS.pigTurn
+			turn += 1
+			turn = turn%len(players)
 			
 			GS.draw(window)
-			root.after(1000, update)
+			root.after(1000, update, players, turn)
 
-		root.after(1000, update)
+		players = [pigAgent.simplePigAgent()] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
+		root.after(1000, update, players, 0)
+
+	# Mini-max Agents
+	if gameType == 'minimax':
+		def update(players, turn):
+			if GS.isEscaped():
+				print 'Pig escaped!'
+				return
+			
+			if GS.isCaptured():
+				print 'Pig is captured'
+				return
+			
+			players[turn].play(GS)
+			# switch player
+			turn += 1
+			turn = turn%len(players)
+			
+			GS.draw(window)
+			root.after(1000, update, players, turn)
+
+		players = [pigAgent.minimaxPigAgent()] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
+		root.after(1000, update, players, 0)
 
 	root.mainloop()
 	
@@ -61,9 +79,15 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 
 	# Optional Arguments
+	parser.add_argument('-p', help='Number of stone agents.', dest='numStoneAgents', default=1, type=int)
+
 	parser.add_argument('-s', help='Play simple game.', dest='simpleGame', action='store_true')
+	parser.add_argument('-m', help='Play minimax game.', dest='minimax', action='store_true')
 
 	args = parser.parse_args()
 
 	if args.simpleGame:
-		main('simple')
+		main('simple', args.numStoneAgents)
+	elif args.minimax:
+		main('minimax', args.numStoneAgents)
+

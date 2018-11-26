@@ -24,4 +24,11 @@ class simpleStoneAgent(stoneAgent):
 
 		GS.placeBlock(move)
 
-	
+class minimaxStoneAgent(stoneAgent):
+
+	def __init__(self):
+		return
+
+	def play(self, GS):
+
+		return
