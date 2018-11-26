@@ -29,18 +29,20 @@ class GameState():
 		# Add rocks
 		t = nBlocks
 		while True:
+			if t == 0:
+				break
 			x = random.randrange(rows)
 			y = random.randrange(cols)
 			if self.grid[x][y] == 0:
 				self.grid[x][y] = -1
 				t -= 1
-			if t == 0:
-				break
 
 		# Add pig
 		while True:
-			x = random.randrange(2, rows-2)
-			y = random.randrange(2, cols-2)
+			buffer_row = rows//3
+			buffer_col = cols//3
+			x = random.randrange(buffer_row, rows-buffer_row)
+			y = random.randrange(buffer_col, cols-buffer_col)
 			if self.grid[x][y] == 0:
 				self.pigPosition = (x, y)
 				self.grid[x][y] = 1
