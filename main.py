@@ -28,32 +28,27 @@ def main():
 	GS.draw(window)
 
 	# Simple Pig Agent Gameplay (no placing rocks)
-	
-
 	def update():
 		if GS.isEscaped():
 			print 'Pig escaped!'
 			return
+		
 		if(GS.pigTurn):
 			a = pigAgent.simplePigAgent()
 		else:
 			a = stoneAgent.simpleStoneAgent()
+		
 		a.play(GS)
-		#switch player
+		
+		# switch player
 		GS.pigTurn = not GS.pigTurn
-		print GS.pigPosition
+		
 		GS.draw(window)
 		root.after(1000, update)
 
 	root.after(1000, update)
 
 	root.mainloop()
-		
-		
-		
-
-
-
 	
 
 if __name__ == '__main__':
