@@ -1,4 +1,5 @@
 import Tkinter as tk
+import argparse
 
 from util import *
 from hexagon import Hexagon, Point
@@ -13,7 +14,7 @@ root.withdraw() # Make sure no window drawn for root Tk() instance
 def cleanUp():
 	root.destroy()
 
-def main():
+def main(gameType):
 
 	# Tkinter window config
 	window = tk.Toplevel()
@@ -27,33 +28,42 @@ def main():
 	# Draw window
 	GS.draw(window)
 
-	# Simple Pig Agent Gameplay (no placing rocks)
-	def update():
-		if GS.isEscaped():
-			print 'Pig escaped!'
-			return
-		
-		if GS.isCaptured():
-			print 'Pig is captured'
-			return
+	# Simple Pig Agent Gameplay
+	if gameType == 'simple':
+		def update():
+			if GS.isEscaped():
+				print 'Pig escaped!'
+				return
+			
+			if GS.isCaptured():
+				print 'Pig is captured'
+				return
 
-		if GS.pigTurn:
-			a = pigAgent.simplePigAgent()
-		else:
-			a = stoneAgent.simpleStoneAgent()
-		
-		a.play(GS)
-		
-		# switch player
-		GS.pigTurn = not GS.pigTurn
-		
-		GS.draw(window)
+			if GS.pigTurn:
+				a = pigAgent.simplePigAgent()
+			else:
+				a = stoneAgent.simpleStoneAgent()
+			
+			a.play(GS)
+			
+			# switch player
+			GS.pigTurn = not GS.pigTurn
+			
+			GS.draw(window)
+			root.after(1000, update)
+
 		root.after(1000, update)
-
-	root.after(1000, update)
 
 	root.mainloop()
 	
 
 if __name__ == '__main__':
-	main()
+	parser = argparse.ArgumentParser()
+
+	# Optional Arguments
+	parser.add_argument('-s', help='Play simple game.', dest='simpleGame', action='store_true')
+
+	args = parser.parse_args()
+
+	if args.simpleGame:
+		main('simple')
