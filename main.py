@@ -33,7 +33,11 @@ def main():
 			print 'Pig escaped!'
 			return
 		
-		if(GS.pigTurn):
+		if GS.isCaptured():
+			print 'Pig is captured'
+			return
+
+		if GS.pigTurn:
 			a = pigAgent.simplePigAgent()
 		else:
 			a = stoneAgent.simpleStoneAgent()

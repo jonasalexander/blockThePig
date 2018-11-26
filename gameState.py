@@ -2,6 +2,7 @@ import random
 import Tkinter as tk
 
 from hexagon import Hexagon, Point
+from util import *
 
 class GameState():	
 
@@ -23,7 +24,6 @@ class GameState():
 		# 1 means pig
 
 		self.pigTurn = False
-		self.isCaptured = False
 		self.pigPosition = None
 		
 		# Add rocks
@@ -78,7 +78,7 @@ class GameState():
 		return i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1
 
 	def isCaptured(self):
-		return True
+		return optimalPigNextStep(self) is None
 
 	def getLegalMoves(self, pos=None):
 		if pos is None:
