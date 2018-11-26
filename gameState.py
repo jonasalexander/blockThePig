@@ -48,16 +48,30 @@ class GameState():
 				self.grid[x][y] = 1
 				break
 
-	def placeBlock(self, x, y):
+	def placeBlock(self, pos):
+		x, y = pos
 		self.grid[x][y] = -1
 
-	def movePig(self, x, y):
+	def movePig(self, pos):
+		x, y = pos
 		if self.grid[x][y] != 0:
 			print 'Error, trying to place pig in square that is not empty'
 		i, j = self.pigPosition
 		self.grid[i][j] = 0
 		self.grid[x][y] = 1
 		self.pigPosition = (x, y)
+
+	def fieldIsEmpty(self, pos):
+		x, y = pos
+		return self.grid[x][y] == 0
+
+	def fieldIsPig(self, pos):
+		x, y = pos
+		return self.grid[x][y] == 1
+
+	def fieldIsStone(self, pos):
+		x, y = pos
+		return self.grid[x][y] == -1
 
 	def isEscaped(self):
 		i, j = self.pigPosition
@@ -66,8 +80,74 @@ class GameState():
 	def isCaptured(self):
 		return True
 
-	def getLegalMoves(self):
-		return None
+	def getLegalMoves(self, pos=None):
+		if pos is None:
+			pos = self.pigPosition
+		
+		x, y = pos
+		
+		#if it is a stone ignore
+		if self.fieldIsStone(pos) == -1:
+			return []
+
+		edges = []
+
+		#even row 
+		if x%2 == 0:
+			if x != 0:
+				edges.append((x-1,y)) 
+				# top right
+
+			if x != self.rows-1:
+				edges.append((x+1,y))
+				# bottom right
+
+			if y != self.cols-1:
+				edges.append((x,y+1))
+				# right
+
+			if y != 0:
+				edges.append((x, y-1))
+				# left
+				if x != 0:
+					edges.append((x-1,y-1))
+					# top left
+
+				if x != self.rows - 1:
+					edges.append((x+1, y-1))
+					# bottom left
+
+		#odd row
+		else:
+			edges.append((x-1,y))
+			# top left
+
+			if y != 0:
+				edges.append((x, y-1))
+				# left
+
+				if x != self.rows-1:
+					edges.append((x+1, y))
+					# bottom left
+
+			if y != self.cols -1:
+				edges.append((x,y+1))
+				# right
+
+				edges.append((x-1, y+1))
+				# top right
+
+				if x != self.rows-1:
+					edges.append((x+1, y+1))
+					# bottom right
+
+		# remove all edges *to* stones/blocked fields
+		new_edges = []
+		for v in edges:
+			if self.fieldIsEmpty(v):
+				new_edges.append(v)
+
+		return new_edges
 		
 	def draw(self, window):
 		prevCanvas = window.winfo_children()
