@@ -22,6 +22,7 @@ class GameState():
 		# -1 means stone
 		# 1 means pig
 
+		self.pigTurn = False
 		self.isCaptured = False
 		self.pigPosition = None
 		
@@ -38,16 +39,15 @@ class GameState():
 
 		# Add pig
 		while True:
-			x = random.randrange(rows)
-			y = random.randrange(cols)
+			x = random.randrange(2, rows-2)
+			y = random.randrange(2, cols-2)
 			if self.grid[x][y] == 0:
 				self.pigPosition = (x, y)
 				self.grid[x][y] = 1
 				break
 
 	def placeBlock(self, x, y):
-		return
-		# self.grid[x][y]
+		self.grid[x][y] = -1
 
 	def movePig(self, x, y):
 		if self.grid[x][y] != 0:

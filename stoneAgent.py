@@ -1,6 +1,6 @@
 from util import *
 
-class pigAgent():
+class stoneAgent():
 
 	def __init__(self):
 		return
@@ -9,7 +9,7 @@ class pigAgent():
 		return
 
 
-class simplePigAgent(pigAgent):
+class simpleStoneAgent(stoneAgent):
 
 	def __init__(self):
 		return
@@ -30,18 +30,14 @@ class simplePigAgent(pigAgent):
 		final = None
 		fringe.append(GS.pigPosition)
 		while fringe:
-			print 'fringe: ' + str(fringe)
-			#v = fringe.pop(0)
-			vx, vy = fringe.pop(0)
-			#don't expand paths that go through stones, still finicky on diagonals
-			while GS.grid[vx][vy] < 0:
-				vx, vy = fringe.pop(0)
-			visited.add((vx, vy)) 
-			neighbours = adjacencyList[(vx, vy)]
+			#print 'fringe: ' + str(fringe)
+			v = fringe.pop(0)
+			visited.add(v)
+			neighbours = adjacencyList[v]
 			#print neighbours
 			for node in neighbours:
 				if node not in visited:
-					parent[node] = (vx, vy)
+					parent[node] = v
 					fringe.append(node)
 					i, j = node
 					#print 'node: ' + str(node)
@@ -50,17 +46,17 @@ class simplePigAgent(pigAgent):
 						fringe = []
 						final = node
 						break
-
 		if final is None:
 			print 'No way for pig to escape!'
 			return
-		print parent
+
 		next = parent[final]
 		while next != GS.pigPosition:
 			next, final = parent[next], next
 
-		print "PIG:", (final[0], final[1])
-		GS.movePig(final[0], final[1])
+		print "STONE:", (final[0], final[1])
+		GS.placeBlock(final[0], final[1])
+		
 		
 
 			

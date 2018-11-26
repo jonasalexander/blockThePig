@@ -4,6 +4,7 @@ from util import *
 from hexagon import Hexagon, Point
 from gameState import GameState
 import pigAgent
+import stoneAgent
 
 root = tk.Tk()
 root.withdraw() # Make sure no window drawn for root Tk() instance
@@ -27,13 +28,19 @@ def main():
 	GS.draw(window)
 
 	# Simple Pig Agent Gameplay (no placing rocks)
-	a = pigAgent.simplePigAgent()
+	
+
 	def update():
 		if GS.isEscaped():
 			print 'Pig escaped!'
 			return
-
+		if(GS.pigTurn):
+			a = pigAgent.simplePigAgent()
+		else:
+			a = stoneAgent.simpleStoneAgent()
 		a.play(GS)
+		#switch player
+		GS.pigTurn = not GS.pigTurn
 		print GS.pigPosition
 		GS.draw(window)
 		root.after(1000, update)
