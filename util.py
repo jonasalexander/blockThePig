@@ -22,37 +22,51 @@ def getAdjacencyList(GS):
 			#even row 
 			if x%2 == 0:
 				if x != 0:
-					edges.append((x-1,y))
-					if y != N_ROWS - 1:
-						edges.append((x-1, y+1))
-
-				if y != N_COLS-1:
-					edges.append((x,y+1))
-
-				if y != 0:
-					edges.append((x, y-1))
+					edges.append((x-1,y)) 
+					# top right
 
 				if x != N_ROWS-1:
 					edges.append((x+1,y))
+					# bottom right
+
+				if y != N_COLS-1:
+					edges.append((x,y+1))
+					# right
+
+				if y != 0:
+					edges.append((x, y-1))
+					# left
+					if x != 0:
+						edges.append((x-1,y-1))
+						# top left
+
 					if y != N_ROWS - 1:
-						edges.append((x+1, y+1))
+						edges.append((x+1, y-1))
+						# bottom left
 
 			#odd row
 			else:
 				edges.append((x-1,y))
-
-				if x != N_ROWS-1:
-					edges.append((x+1,y))
-
-				if y != N_COLS -1:
-					edges.append((x, y+1))
+				# top left
 
 				if y != 0:
 					edges.append((x, y-1))
-					edges.append((x-1, y-1))
+					# left
 
 					if x != N_ROWS-1:
-						edges.append((x-1, y-1))
+						edges.append((x+1, y))
+						# bottom left
+
+				if y != N_COLS -1:
+					edges.append((x,y+1))
+					# right
+
+					edges.append((x-1, y+1))
+					# top right
+
+					if x != N_ROWS-1:
+						edges.append((x+1, y+1))
+						# bottom right
 
 			# remove all edges to stones/blocked fields
 			new_edges = []
