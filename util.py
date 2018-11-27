@@ -38,5 +38,9 @@ def optimalPigNextStep(GS, pigId):
 	next = parent[final]
 	while next != GS.pigPositions[pigId]:
 		next, final = parent[next], next
-		
+
 	return final
+
+
+# TODO: BFS with score Tank
+
