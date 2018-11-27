@@ -8,15 +8,19 @@ class GameState():
 
 	defaultBlocks = 15
 
-	def __init__(self, rows, cols, nBlocks=None):
-		if nBlocks is None:
-			nBlocks = GameState.defaultBlocks
-		if nBlocks > rows*cols:
-			nBlocks = rows*cols-1
-			print 'Warning: set nBlocks greater than rows*cols'
+	def __init__(self, rows, cols, numBlocks=None, numPigs=None):
+		if numBlocks is None:
+			numBlocks = GameState.defaultBlocks
+		if numBlocks > rows*cols:
+			numBlocks = rows*cols-1
+			print 'Warning: set numBlocks greater than rows*cols'
+
+		if numPigs is None:
+			numPigs = 1
 
 		self.rows = rows
 		self.cols = cols
+		self.numPigs = numPigs
 
 		self.grid = [[0]*cols for i in range(rows)]
 		# 0 means empty
@@ -24,10 +28,10 @@ class GameState():
 		# 1 means pig
 
 		self.pigTurn = False
-		self.pigPosition = None
+		self.pigPositions = []
 		
 		# Add rocks
-		t = nBlocks
+		t = numBlocks
 		while True:
 			if t == 0:
 				break
@@ -38,28 +42,31 @@ class GameState():
 				t -= 1
 
 		# Add pig
+		t = numPigs
 		while True:
+			if t == 0:
+				break
 			buffer_row = rows//3
 			buffer_col = cols//3
 			x = random.randrange(buffer_row, rows-buffer_row)
 			y = random.randrange(buffer_col, cols-buffer_col)
 			if self.grid[x][y] == 0:
-				self.pigPosition = (x, y)
+				self.pigPositions.append((x, y))
 				self.grid[x][y] = 1
-				break
+				t -= 1
 
 	def placeBlock(self, pos):
 		x, y = pos
 		self.grid[x][y] = -1
 
-	def movePig(self, pos):
+	def movePig(self, pos, pigId):
 		x, y = pos
 		if self.grid[x][y] != 0:
 			print 'Error, trying to place pig in square that is not empty'
-		i, j = self.pigPosition
+		i, j = self.pigPositions[pigId]
 		self.grid[i][j] = 0
 		self.grid[x][y] = 1
-		self.pigPosition = (x, y)
+		self.pigPositions[pigId] = (x, y)
 
 	def fieldIsEmpty(self, pos):
 		x, y = pos
@@ -73,16 +80,32 @@ class GameState():
 		x, y = pos
 		return self.grid[x][y] == -1
 
-	def isEscaped(self):
-		i, j = self.pigPosition
+	def isEscaped(self, pigId):
+		i, j = self.pigPositions[pigId]
 		return i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1
 
-	def isCaptured(self):
-		return optimalPigNextStep(self) is None
+	def allPigsEscaped(self):
+		for pigPos in self.pigPositions:
+			i, j = pigPos
+			escaped = (i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1)
+			if not escaped:
+				return False
+		return True
 
-	def getLegalMoves(self, pos=None):
+	def isCaptured(self, pigId):
+		return optimalPigNextStep(self, pigId) is None
+
+	def allPigsCaptured(self):
+		for pigId in range(self.numPigs):
+			if not self.isCaptured(pigId):
+				return False
+		return True
+
+	def getLegalMoves(self, pos=None, pigId=None):
 		if pos is None:
-			pos = self.pigPosition
+			if pigId is None:
+				raise Exception("Need to pass either position or pigId to getLegalMoves")
+			pos = self.pigPositions[pigId]
 		
 		x, y = pos
 		
