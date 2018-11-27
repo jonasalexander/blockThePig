@@ -1,8 +1,9 @@
 from util import *
 
-class pigAgent():
+class pigAgent(object):
 
-	def __init__(self):
+	def __init__(self, pigId):
+		self.pigId = pigId
 		return
 
 	def play(self):
@@ -11,18 +12,20 @@ class pigAgent():
 
 class simplePigAgent(pigAgent):
 
-	def __init__(self):
+	def __init__(self, pigId):
+		super(simplePigAgent, self).__init__(pigId)
 		return
 
 	def play(self, GS):
 
-		move = optimalPigNextStep(GS)
+		move = optimalPigNextStep(GS, self.pigId)
 
 		if move is None:
-			print 'Pig can not find any next move'
+			if not GS.isEscaped(self.pigId):
+				print 'Pig unexpectedly can not find any next move'
 			return
 
-		GS.movePig(move)
+		GS.movePig(move, self.pigId)
 		
 class minimaxPigAgent(pigAgent):
 	def __init__(self):

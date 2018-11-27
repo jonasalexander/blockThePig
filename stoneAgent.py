@@ -1,3 +1,5 @@
+import random
+
 from util import *
 
 class stoneAgent():
@@ -16,7 +18,11 @@ class simpleStoneAgent(stoneAgent):
 
 	def play(self, GS):
 
-		move = optimalPigNextStep(GS)
+		pigId = random.randint(0, GS.numPigs-1)
+		while GS.isEscaped(pigId) or GS.isCaptured(pigId):
+			pigId = random.randint(0, GS.numPigs-1)
+
+		move = optimalPigNextStep(GS, pigId)
 
 		if move is None:
 			print 'Pig can not find any next move'
