@@ -38,5 +38,5 @@ def optimalPigNextStep(GS):
 	next = parent[final]
 	while next != GS.pigPosition:
 		next, final = parent[next], next
-
+		
 	return final
