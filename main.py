@@ -14,7 +14,7 @@ root.withdraw() # Make sure no window drawn for root Tk() instance
 def cleanUp():
 	root.destroy()
 
-def main(gameType, numStoneAgents, numPigAgents):
+def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 
 	# Tkinter window config
 	window = tk.Toplevel()
@@ -22,15 +22,53 @@ def main(gameType, numStoneAgents, numPigAgents):
 	window.minsize(width=500, height=500)
 	window.protocol('WM_DELETE_WINDOW', cleanUp)
 
-	# Init game state
-	GS = GameState(N_ROWS, N_COLS, numPigs=numPigAgents)
-
-	# Draw window
-	GS.draw(window)
-
 	# Simple Pig Agent Gameplay
 	if gameType == 'simple':
-		def update(players, turn):
+
+		# will iterate through players for turns
+		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
+
+		# Init game state
+		GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
+
+		# Draw window
+		GS.draw(window)
+
+		def update():
+			if GS.allPigsEscaped():
+				print 'All pigs escaped!'
+				cleanUp()
+				return
+			
+			if GS.allPigsCaptured():
+				print 'All pigs captured!'
+				cleanUp()
+				return
+
+			elif GS.allPigsEscapedOrCaptued():
+				print 'All pigs either escaped or captured!'
+				cleanUp()
+				return
+			
+			GS.play() # where the magic happens
+			GS.draw(window)
+			root.after(TIME_DELAY, update)
+
+		root.after(TIME_DELAY, update)
+
+	# Mini-max Agent Gameplay
+	elif gameType == 'minimax':
+
+		# will iterate through players for turns
+		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
+
+		# Init game state
+		GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
+
+		# Draw window
+		GS.draw(window)
+
+		def update():
 			if GS.allPigsEscaped():
 				print 'All pigs escaped!'
 				cleanUp()
@@ -41,40 +79,11 @@ def main(gameType, numStoneAgents, numPigAgents):
 				cleanUp()
 				return
 			
-			players[turn].play(GS)
-			# switch player
-			turn += 1
-			turn = turn%len(players)
-			
+			GS.play() # where the magic happens
 			GS.draw(window)
-			root.after(1000, update, players, turn)
+			root.after(TIME_DELAY, update)
 
-		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
-		root.after(1000, update, players, 0)
-
-	# Mini-max Agents
-	if gameType == 'minimax':
-		def update(players, turn):
-			if GS.isEscaped():
-				print 'Pig escaped!'
-				cleanUp()
-				return
-			
-			if GS.isCaptured():
-				print 'Pig is captured'
-				cleanUp()
-				return
-			
-			players[turn].play(GS)
-			# switch player
-			turn += 1
-			turn = turn%len(players)
-			
-			GS.draw(window)
-			root.after(1000, update, players, turn)
-
-		players = [pigAgent.minimaxPigAgent() for _ in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
-		root.after(1000, update, players, 0)
+		root.after(TIME_DELAY, update)
 
 	root.mainloop()
 	
@@ -88,11 +97,12 @@ if __name__ == '__main__':
 
 	parser.add_argument('-s', help='Play simple game.', dest='simpleGame', action='store_true')
 	parser.add_argument('-m', help='Play minimax game.', dest='minimax', action='store_true')
+	parser.add_argument('-d', help='If minimax game, the depth of the states the agents should explore.', dest='maxDepth',  default=None, type=int)
 
 	args = parser.parse_args()
 
 	if args.simpleGame:
 		main('simple', args.numStoneAgents, args.numPigAgents)
 	elif args.minimax:
-		main('minimax', args.numStoneAgents, args.numPigAgents)
+		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
 

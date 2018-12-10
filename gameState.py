@@ -3,12 +3,14 @@ import Tkinter as tk
 
 from hexagon import Hexagon, Point
 from util import *
+from stoneAgent import stoneAgent
+from pigAgent import pigAgent
 
 class GameState():	
 
 	defaultBlocks = 15
 
-	def __init__(self, rows, cols, numBlocks=None, numPigs=None):
+	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None):
 		if numBlocks is None:
 			numBlocks = GameState.defaultBlocks
 		if numBlocks > rows*cols:
@@ -27,8 +29,13 @@ class GameState():
 		# -1 means stone
 		# 1 means pig
 
-		self.pigTurn = False
 		self.pigPositions = []
+
+		self.turn = 0 # index into self.players
+		self.players = players
+
+		# last move (to be able to deduce optimal move from optimal game state)
+		self.lastMove = None
 		
 		# Add rocks
 		t = numBlocks
@@ -41,7 +48,7 @@ class GameState():
 				self.grid[x][y] = -1
 				t -= 1
 
-		# Add pig
+		# Add pig(s)
 		t = numPigs
 		while True:
 			if t == 0:
@@ -55,9 +62,15 @@ class GameState():
 				self.grid[x][y] = 1
 				t -= 1
 
+	def incrementTurn(self):
+		self.turn = (self.turn+1)%len(self.players)
+
 	def placeBlock(self, pos):
 		x, y = pos
 		self.grid[x][y] = -1
+
+		self.incrementTurn()
+		self.lastMove = pos
 
 	def movePig(self, pos, pigId):
 		x, y = pos
@@ -67,6 +80,22 @@ class GameState():
 		self.grid[i][j] = 0
 		self.grid[x][y] = 1
 		self.pigPositions[pigId] = (x, y)
+
+		self.incrementTurn()
+		self.lastMove = pos
+
+	def isPigTurn(self):
+		return self.players[self.turn].isPig
+
+	def distanceToNearestPig(self, pos):
+		shortestPathLen = float("inf")
+		for pigId in range(self.numPigs):
+			path = BFSPath(self, pigId, pos)
+			if path is None:
+				continue
+			elif shortestPathLen > len(path):
+				shortestPathLen = len(path)
+		return shortestPathLen
 
 	def fieldIsEmpty(self, pos):
 		x, y = pos
@@ -85,15 +114,13 @@ class GameState():
 		return i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1
 
 	def allPigsEscaped(self):
-		for pigPos in self.pigPositions:
-			i, j = pigPos
-			escaped = (i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1)
-			if not escaped:
+		for pigId in range(self.numPigs):
+			if not self.isEscaped(pigId):
 				return False
 		return True
 
 	def isCaptured(self, pigId):
-		return optimalPigNextStep(self, pigId) is None
+		return optimalPigNextStep(self, pigId) is None and not self.isEscaped(pigId)
 
 	def allPigsCaptured(self):
 		for pigId in range(self.numPigs):
@@ -101,77 +128,100 @@ class GameState():
 				return False
 		return True
 
-	def getLegalMoves(self, pos=None, pigId=None):
-		if pos is None:
-			if pigId is None:
-				raise Exception("Need to pass either position or pigId to getLegalMoves")
-			pos = self.pigPositions[pigId]
+	def allPigsEscapedOrCaptued(self):
+		for pigId in range(self.numPigs):
+			if not self.isEscaped(pigId) and not self.isCaptured(pigId):
+				return False
+		return True
+
+
+	def getLegalMoves(self, pos=None):
+
+		if not pos is None or self.players[self.turn].isPig:
+			# get pig's possible moves
+			if pos is None:
+				pos = self.pigPositions[self.players[self.turn].pigId]
 		
-		x, y = pos
+			x, y = pos
 		
-		#if it is a stone ignore
-		if self.fieldIsStone(pos) == -1:
-			return []
+			#if it is a stone ignore
+			if self.fieldIsStone(pos) == -1:
+				return []
 
-		edges = []
+			moves = []
 
-		#even row 
-		if x%2 == 0:
-			if x != 0:
-				edges.append((x-1,y)) 
-				# top right
-
-			if x != self.rows-1:
-				edges.append((x+1,y))
-				# bottom right
-
-			if y != self.cols-1:
-				edges.append((x,y+1))
-				# right
-
-			if y != 0:
-				edges.append((x, y-1))
-				# left
+			#even row 
+			if x%2 == 0:
 				if x != 0:
-					edges.append((x-1,y-1))
-					# top left
+					moves.append((x-1,y)) # top right
+				if x != self.rows-1:
+					moves.append((x+1,y)) # bottom right
+				if y != self.cols-1:
+					moves.append((x,y+1)) # right
+				if y != 0:
+					moves.append((x, y-1)) # left
+					if x != 0:
+						moves.append((x-1,y-1)) # top left
+					if x != self.rows - 1:
+						moves.append((x+1, y-1)) # bottom left
 
-				if x != self.rows - 1:
-					edges.append((x+1, y-1))
-					# bottom left
+			#odd row
+			else:
+				moves.append((x-1,y)) # top left
+				if y != 0:
+					moves.append((x, y-1)) # left
+					if x != self.rows-1:
+						moves.append((x+1, y)) # bottom left
+				if y != self.cols -1:
+					moves.append((x,y+1)) # right
+					moves.append((x-1, y+1)) # top right
+					if x != self.rows-1:
+						moves.append((x+1, y+1)) # bottom right
 
-		#odd row
+			# remove all moves *to* stones/blocked fields
+			new_moves = []
+			for v in moves:
+				if self.fieldIsEmpty(v):
+					new_moves.append(v)
+
+			return new_moves
+
 		else:
-			edges.append((x-1,y))
-			# top left
+			# get all possible stone placements
+			moves = []
 
-			if y != 0:
-				edges.append((x, y-1))
-				# left
+			for r in range(self.rows):
+				for c in range(self.cols):
+					if self.grid[r][c] == 0:
+						moves.append((r, c)) # can place stone there
 
-				if x != self.rows-1:
-					edges.append((x+1, y))
-					# bottom left
+			return moves
 
-			if y != self.cols -1:
-				edges.append((x,y+1))
-				# right
+	def play(self):
+		self.players[self.turn].play(self)
 
-				edges.append((x-1, y+1))
-				# top right
+	def allNextStates(self):
+		# generate all possible states from all possible moves in getLegalMoves
+		nextStates = []
+			
+		moves = self.getLegalMoves()
 
-				if x != self.rows-1:
-					edges.append((x+1, y+1))
-					# bottom right
+		if self.isPigTurn():
+			# do each move
+			for move in moves:
+				moveGS = deepcopy(self)
+				moveGS.movePig(move, self.players[self.turn].pigId)
+				nextStates.append(moveGS)
 
-		# remove all edges *to* stones/blocked fields
-		new_edges = []
-		for v in edges:
-			if self.fieldIsEmpty(v):
-				new_edges.append(v)
+		else:
+			# do each move
+			for move in moves:
+				moveGS = deepcopy(self)
+				moveGS.placeBlock(move)
+				nextStates.append(moveGS)
 
-		return new_edges
-		
+		return nextStates
+
 	def draw(self, window):
 		prevCanvas = window.winfo_children()
 		if prevCanvas:

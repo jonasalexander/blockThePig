@@ -1,12 +1,14 @@
-from collections import defaultdict
+from copy import deepcopy
 
 # Global vars
-N_ROWS = 10
-N_COLS = 10
+N_ROWS = 6
+N_COLS = 6
 STATES = ['free', 'pig', 'block']
+MAXDEPTH = 8
+TIME_DELAY = 500
 
-def optimalPigNextStep(GS, pigId):
-	# Use BFS/Djikstra to figure out next step
+def BFSPathToEdge(GS, pigId):
+	# Use BFS/Djikstra to figure out path
 	fringe = []
 	visited = set()
 	parent = {}
@@ -20,7 +22,7 @@ def optimalPigNextStep(GS, pigId):
 	while fringe:
 		v = fringe.pop(0)
 		visited.add(v) 
-		neighbours = GS.getLegalMoves(v)
+		neighbours = GS.getLegalMoves(pos=v)
 		for node in neighbours:
 			if node not in visited and GS.fieldIsEmpty(node):
 				parent[node] = v
@@ -35,12 +37,59 @@ def optimalPigNextStep(GS, pigId):
 	if final is None:
 		return
 	
+	path = [final, parent[final]]
 	next = parent[final]
 	while next != GS.pigPositions[pigId]:
 		next, final = parent[next], next
+		path.append(next)
 
-	return final
+	return path[::-1]
+
+def BFSPath(GS, pigId, goal):
+	# Use BFS/Djikstra to figure out path
+	fringe = []
+	visited = set()
+	parent = {}
+
+	i,j = GS.pigPositions[pigId]
+	if (i, j) == goal:
+		return
+
+	final = None
+	fringe.append(GS.pigPositions[pigId])
+	while fringe:
+		v = fringe.pop(0)
+		visited.add(v) 
+		neighbours = GS.getLegalMoves(pos=v)
+		for node in neighbours:
+			if node not in visited and GS.fieldIsEmpty(node):
+				parent[node] = v
+				fringe.append(node)
+				visited.add(node)
+				if node == goal:
+					fringe = []
+					final = node
+					break
+
+	if final is None:
+		return
+	
+	path = [final, parent[final]]
+	next = parent[final]
+	while next != GS.pigPositions[pigId]:
+		next, final = parent[next], next
+		path.append(next)
+
+	return path[::-1]
+
+def optimalPigNextStep(GS, pigId):
+	path = BFSPathToEdge(GS, pigId)
+	if path is None:
+		return
+	return path[1]
 
 
-# TODO: BFS with score Tank
+
+
+
 
