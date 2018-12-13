@@ -1,4 +1,4 @@
-import Tkinter as tk
+import tkinter as tk
 
 from util import *
 
@@ -28,7 +28,7 @@ class Hexagon():
 		elif self.state == 'free':
 			fill = 'white'
 		else:
-			print 'Error, unrecognized state in Hexagons init func'
+			print ('Error, unrecognized state in Hexagons init func')
 
 		a = Hexagon.sideLength*3**(0.5)/2 # by pythoagoras
 		p1 = Point(center.x-a, center.y-Hexagon.sideLength/2)

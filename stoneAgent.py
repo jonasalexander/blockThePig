@@ -30,7 +30,7 @@ class simpleStoneAgent(stoneAgent):
 
 		if move is None:
 			GS.incrementTurn()
-			print 'Pig can not find any next move'
+			print ('Pig can not find any next move')
 			return
 
 		GS.placeBlock(move)

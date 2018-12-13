@@ -1,5 +1,5 @@
 import random
-import Tkinter as tk
+import tkinter as tk
 
 from hexagon import Hexagon, Point
 from util import *
@@ -15,7 +15,7 @@ class GameState():
 			numBlocks = GameState.defaultBlocks
 		if numBlocks > rows*cols:
 			numBlocks = rows*cols-1
-			print 'Warning: set numBlocks greater than rows*cols'
+			print ('Warning: set numBlocks greater than rows*cols')
 
 		if numPigs is None:
 			numPigs = 1
@@ -75,7 +75,7 @@ class GameState():
 	def movePig(self, pos, pigId):
 		x, y = pos
 		if self.grid[x][y] != 0:
-			print 'Error, trying to place pig in square that is not empty'
+			print ('Error, trying to place pig in square that is not empty')
 		i, j = self.pigPositions[pigId]
 		self.grid[i][j] = 0
 		self.grid[x][y] = 1

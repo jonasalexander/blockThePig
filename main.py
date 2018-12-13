@@ -1,4 +1,4 @@
-import Tkinter as tk
+import tkinter as tk
 import argparse
 
 from util import *
@@ -9,13 +9,14 @@ import stoneAgent
 
 root = tk.Tk()
 root.withdraw() # Make sure no window drawn for root Tk() instance
+pigWins = 0
 
 # Called when user closes a window.
 def cleanUp():
 	root.destroy()
 
 def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
-
+	global pigWins
 	# Tkinter window config
 	window = tk.Toplevel()
 	window.title('Block The Pig')
@@ -36,19 +37,21 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 
 		def update():
 			if GS.allPigsEscaped():
-				print 'All pigs escaped!'
+				print ('All pigs escaped!')
 				cleanUp()
-				return
+				pigWins += 1
+				return 
 			
 			if GS.allPigsCaptured():
-				print 'All pigs captured!'
+				print ('All pigs captured!')
 				cleanUp()
-				return
+				return 
 
 			elif GS.allPigsEscapedOrCaptued():
-				print 'All pigs either escaped or captured!'
+				print ('All pigs either escaped or captured!')
 				cleanUp()
-				return
+				pigWins += 1
+				return 
 			
 			GS.play() # where the magic happens
 			GS.draw(window)
@@ -70,14 +73,15 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 
 		def update():
 			if GS.allPigsEscaped():
-				print 'All pigs escaped!'
+				print ('All pigs escaped!')
 				cleanUp()
-				return
+				pigWins += 1
+				return 
 			
 			if GS.allPigsCaptured():
-				print 'All pigs captured!'
+				print ('All pigs captured!')
 				cleanUp()
-				return
+				return 
 			
 			GS.play() # where the magic happens
 			GS.draw(window)
@@ -98,11 +102,17 @@ if __name__ == '__main__':
 	parser.add_argument('-s', help='Play simple game.', dest='simpleGame', action='store_true')
 	parser.add_argument('-m', help='Play minimax game.', dest='minimax', action='store_true')
 	parser.add_argument('-d', help='If minimax game, the depth of the states the agents should explore.', dest='maxDepth',  default=None, type=int)
+	parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
+
 
 	args = parser.parse_args()
 
 	if args.simpleGame:
-		main('simple', args.numStoneAgents, args.numPigAgents)
+		for n in range(args.iterations):
+			main('simple', args.numStoneAgents, args.numPigAgents)
 	elif args.minimax:
-		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+		for n in range(args.iterations):
+			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+			print ("pig wins at", n, ":", pigWins)
+	print ('pig win rate:', pigWins/args.iterations)
 

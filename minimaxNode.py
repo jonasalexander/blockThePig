@@ -76,6 +76,7 @@ class minimaxNode():
 			bestDist = float("inf")
 			tieBreaker = []
 			for option in fav:
+				# option is a minimaxNode
 				newDist = option.GS.distanceToNearestPig(option.GS.lastMove)
 				if compare(newDist, bestDist):
 					bestDist = newDist
@@ -91,10 +92,10 @@ class minimaxNode():
 		self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
 
 	def __str__(self):
-		print 'Printing minimaxNode instance:'
-		print 'self.GS.grid: ' + str(self.GS.grid)
+		print ('Printing minimaxNode instance:')
+		print ('self.GS.grid: ' + str(self.GS.grid))
 		#print 'self.parent: ' + str(self.parent)
-		print 'self.children: ' + str(self.children)
-		print 'self.exploredCounter: ' + str(self.exploredCounter)
-		print 'self.favoriteChildValue: ' + str(self.favoriteChildValue)
+		print ('self.children: ' + str(self.children))
+		print ('self.exploredCounter: ' + str(self.exploredCounter))
+		print ('self.favoriteChildValue: ' + str(self.favoriteChildValue))
 		return ''

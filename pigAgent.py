@@ -27,7 +27,7 @@ class simplePigAgent(pigAgent):
 
 		if move is None:
 			if not GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-				print 'Pig unexpectedly can not find any next move'
+				print ('Pig unexpectedly can not find any next move')
 			GS.incrementTurn()
 			return
 
