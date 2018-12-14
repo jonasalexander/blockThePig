@@ -1,5 +1,3 @@
-
-
 import Tkinter as tk
 import argparse
 
@@ -8,6 +6,7 @@ from hexagon import Hexagon, Point
 from gameState import GameState
 import pigAgent
 import stoneAgent
+
 
 root = tk.Tk()
 root.withdraw() # Make sure no window drawn for root Tk() instance
@@ -41,19 +40,19 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 				print ('All pigs escaped!')
 				cleanUp()
 				pigWins = pigWins+1
-				return 
-			
+				return
+
 			if GS.allPigsCaptured():
 				print ('All pigs captured!')
 				cleanUp()
-				return 
+				return
 
 			elif GS.allPigsEscapedOrCaptued():
 				print ('All pigs either escaped or captured!')
 				cleanUp()
 				pigWins = pigWins+1
-				return 
-			
+				return
+
 			GS.play() # where the magic happens
 			GS.draw(window)
 			root.after(TIME_DELAY, update)
@@ -77,13 +76,13 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 				print ('All pigs escaped!')
 				cleanUp()
 				pigWins = pigWins+1
-				return 
-			
+				return
+
 			if GS.allPigsCaptured():
 				print ('All pigs captured!')
 				cleanUp()
-				return 
-			
+				return
+
 			GS.play() # where the magic happens
 			GS.draw(window)
 			root.after(TIME_DELAY, update)
@@ -91,7 +90,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 		root.after(TIME_DELAY, update)
 
 	root.mainloop()
-	
+
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
@@ -106,8 +105,9 @@ if __name__ == '__main__':
 	parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
 
 
-	args = parser.parse_args()
+	# args = parser.parse_args()
 
+<<<<<<< HEAD
 	if args.simpleGame:
 		for n in range(args.iterations):
 			main('simple', args.numStoneAgents, args.numPigAgents)
@@ -116,4 +116,13 @@ if __name__ == '__main__':
 			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
 			print ("pig wins at", n, ":", pigWins)
 	print ('pig win rate:', float(pigWins)/float(args.iterations))
-
+=======
+	# if args.simpleGame:
+	# 	for n in range(args.iterations):
+	# 		main('simple', args.numStoneAgents, args.numPigAgents)
+	# elif args.minimax:
+	# 	for n in range(args.iterations):
+	# 		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+	# 		print ("pig wins at", n, ":", pigWins)
+	# print ('pig win rate:', pigWins/args.iterations)
+>>>>>>> 971eb3f8c4f7a1ddd0888ae226735067ffa7db31
