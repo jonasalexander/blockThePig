@@ -6,6 +6,6 @@ nPigAgents = 1
 maxDepth = 2
 
 for n in range(num):
-    wins +=main('minimax', nStoneAgents, nPigAgents, maxDepth)
+    main('minimax', nStoneAgents, nPigAgents, maxDepth)
     print ("pig wins at", n, ":", pigWins)
 print ('pig win rate:', pigWins/num)
