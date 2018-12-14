@@ -1,4 +1,6 @@
-import tkinter as tk
+
+
+import Tkinter as tk
 import argparse
 
 from util import *
@@ -9,7 +11,6 @@ import stoneAgent
 
 root = tk.Tk()
 root.withdraw() # Make sure no window drawn for root Tk() instance
-pigWins = 0
 
 # Called when user closes a window.
 def cleanUp():
@@ -39,7 +40,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 			if GS.allPigsEscaped():
 				print ('All pigs escaped!')
 				cleanUp()
-				pigWins += 1
+				pigWins = pigWins+1
 				return 
 			
 			if GS.allPigsCaptured():
@@ -50,7 +51,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 			elif GS.allPigsEscapedOrCaptued():
 				print ('All pigs either escaped or captured!')
 				cleanUp()
-				pigWins += 1
+				pigWins = pigWins+1
 				return 
 			
 			GS.play() # where the magic happens
@@ -75,7 +76,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 			if GS.allPigsEscaped():
 				print ('All pigs escaped!')
 				cleanUp()
-				pigWins += 1
+				pigWins = pigWins+1
 				return 
 			
 			if GS.allPigsCaptured():
@@ -94,7 +95,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-
+	pigWins = 0
 	# Optional Arguments
 	parser.add_argument('-ns', help='Number of stone agents.', dest='numStoneAgents', default=1, type=int)
 	parser.add_argument('-np', help='Number of pig agents.', dest='numPigAgents', default=1, type=int)
@@ -114,5 +115,5 @@ if __name__ == '__main__':
 		for n in range(args.iterations):
 			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
 			print ("pig wins at", n, ":", pigWins)
-	print ('pig win rate:', pigWins/args.iterations)
+	print ('pig win rate:', float(pigWins)/float(args.iterations))
 

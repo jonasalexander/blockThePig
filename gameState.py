@@ -1,5 +1,5 @@
 import random
-import tkinter as tk
+import Tkinter as tk
 
 from hexagon import Hexagon, Point
 from util import *
