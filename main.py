@@ -1,4 +1,4 @@
-import tkinter as tk
+import Tkinter as tk
 import argparse
 
 from util import *
@@ -6,6 +6,7 @@ from hexagon import Hexagon, Point
 from gameState import GameState
 import pigAgent
 import stoneAgent
+
 
 root = tk.Tk()
 root.withdraw() # Make sure no window drawn for root Tk() instance
@@ -105,14 +106,14 @@ if __name__ == '__main__':
 	parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
 
 
-	args = parser.parse_args()
+	# args = parser.parse_args()
 
-	if args.simpleGame:
-		for n in range(args.iterations):
-			main('simple', args.numStoneAgents, args.numPigAgents)
-	elif args.minimax:
-		for n in range(args.iterations):
-			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
-			print ("pig wins at", n, ":", pigWins)
-	print ('pig win rate:', pigWins/args.iterations)
+	# if args.simpleGame:
+	# 	for n in range(args.iterations):
+	# 		main('simple', args.numStoneAgents, args.numPigAgents)
+	# elif args.minimax:
+	# 	for n in range(args.iterations):
+	# 		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+	# 		print ("pig wins at", n, ":", pigWins)
+	# print ('pig win rate:', pigWins/args.iterations)
 
