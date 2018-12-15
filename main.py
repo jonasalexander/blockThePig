@@ -35,13 +35,6 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 	# Simple Pig Agent Gameplay
 	if gameType == 'simple':
-		print('hey')
-
-		# # will iterate through players for turns
-		# players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
-
-		# # Init game state
-		# GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
 
 		# Draw window
 		if(not GS.quiet):
@@ -80,12 +73,6 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 	# Mini-max Agent Gameplay
 	elif gameType == 'minimax':
-
-		# # will iterate through players for turns
-		# players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
-
-		# # Init game state
-		# GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
 
 		# Draw window
 		if(not GS.quiet):
@@ -130,13 +117,13 @@ if __name__ == '__main__':
 	parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
 
 
-	# args = parser.parse_args()
+	args = parser.parse_args()
 
-	# if args.simpleGame:
-	# 	for n in range(args.iterations):
-	# 		main('simple', args.numStoneAgents, args.numPigAgents)
-	# elif args.minimax:
-	# 	for n in range(args.iterations):
-	# 		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
-	# 		print ("pig wins at", n, ":", pigWins)
-	# print ('pig win rate:', pigWins/args.iterations)
+	if args.simpleGame:
+		for n in range(args.iterations):
+			main('simple', args.numStoneAgents, args.numPigAgents)
+	elif args.minimax:
+		for n in range(args.iterations):
+			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+			print ("pig wins at", n, ":", pigWins)
+	print ('pig win rate:', pigWins/args.iterations)
