@@ -28,6 +28,8 @@ class minimaxNode():
 	# Update children nodes with minimaxNodes from gameStates
 	def addChildren(self, childrenGS):
 		for state in childrenGS:
+			# TODO: we somehow need to prune this 
+			print('trying to fid smt out, line 32 minimaxnode', state.moveBlock)
 			self.children.append(minimaxNode(state, self))
 
 	# essentially a .pop on the children that preserves the data

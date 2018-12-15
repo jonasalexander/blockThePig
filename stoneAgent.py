@@ -37,9 +37,9 @@ class simpleStoneAgent(stoneAgent):
 
 class minimaxStoneAgent(stoneAgent):
 
-	defaultDepth = 1
+	defaultDepth = 2
 
-	def __init__(self, maxDepth):
+	def __init__(self, maxDepth = None):
 		if maxDepth is None:
 			maxDepth = minimaxStoneAgent.defaultDepth
 		self.maxDepth = maxDepth
