@@ -12,6 +12,7 @@ class Simulator():
 
         self.pigWins = 0
     
+        print('q', self.quiet)
     def run(self):
         for n in range(self.num):
             b = main(self.gameType, self.nStoneAgents, self.nPigAgents, self.maxDepth, self.quiet)
@@ -29,9 +30,12 @@ parser.add_argument('-np', help='Number of pig agents.', dest='numPigAgents', de
 parser.add_argument('-g', help='Game type.', dest='gameType', type = str, default = "simple")
 parser.add_argument('-d', help='If minimax game, the depth of the states the agents should explore.', dest='maxDepth',  default=None, type=int)
 parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
-parser.add_argument('-q', help='Whether to show graphics', dest='quiet', action = 'store_true')
+
+#this following line doenst do what i expect it to do. if you dont add anthing self.quit is False as per
+# default if you have either -q True or -q False you get self.quite is True just fyi
+parser.add_argument('-q', help='Whether to show graphics', dest='quiet', default = False, type  = bool )
 
 args = parser.parse_args()
-print "self.quiet", args.quiet
+# print ("self.quiet", args.quiet)
 sim = Simulator(args.gameType, args.iterations, args.numStoneAgents, args.numPigAgents, args.maxDepth, args.quiet)
 sim.run()

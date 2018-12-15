@@ -19,6 +19,7 @@ def cleanUp():
 		pass
 
 def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
+	print(quiet)
 
 	# will iterate through players for turns
 	if(gameType=="simple"):
@@ -50,6 +51,9 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 				print ('Game ended')
 				if(not quiet):
 					cleanUp()
+
+				# TODO: Count number of pigs escaped 
+
 				return True
 
 			GS.play() # where the magic happens
