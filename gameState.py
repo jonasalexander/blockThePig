@@ -153,6 +153,16 @@ class GameState():
 				return False
 		return True
 
+	def nPigsEscaped(self):
+		pigs_escape = 0
+		for pigId in range(self.numPigs):
+			if self.isEscaped(pigId):
+				pigs_escape += 1
+
+		score = round((pigs_escape / self.numPigs), 2)
+		print('GS', score)
+		return score
+			
 
 	def getLegalMoves(self, pos=None):
 

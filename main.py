@@ -46,25 +46,34 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		GS.draw(window)
 
 	def update():
+		print('update')
 		if GS.allPigsEscaped() or GS.allPigsCaptured() or GS.allPigsEscapedOrCaptued():
 			print ('Game ended')
 			if(not quiet):
 				cleanUp()
-
 			# TODO: Count number of pigs escaped 
-			return True
+			
+			score = GS.nPigsEscaped()
+			print('main', score)
+			return score
 
 		GS.play() # where the magic happens
 		if(not quiet):
+			print('notq')
 			GS.draw(window)
+			print('l0', update())
 			root.after(TIME_DELAY, update)
+
 		else:
-			return update()
+			print('q')
+			print('l1', update())
+			return(0 + update())
 
 	if(not quiet):
 		root.after(TIME_DELAY, update)
 	else:
-		return update()
+		print('l2', update())
+		return( 0 + update())
 
 	#
 	if(not quiet):

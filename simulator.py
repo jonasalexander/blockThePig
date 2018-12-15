@@ -16,8 +16,8 @@ class Simulator():
     def run(self):
         for n in range(self.num):
             b = main(self.gameType, self.nStoneAgents, self.nPigAgents, self.maxDepth, self.quiet)
-            if b:
-                self.pigWins +=1
+            print('simul', b)
+            self.pigWins +=  1
         print ('pig win rate:', float(self.pigWins)/float(self.num))
         return
 
