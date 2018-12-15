@@ -11,13 +11,12 @@ class Simulator():
         self.maxDepth = maxDepth
 
         self.pigWins = 0
-    
-        print('q', self.quiet)
+
     def run(self):
         for n in range(self.num):
             b = main(self.gameType, self.nStoneAgents, self.nPigAgents, self.maxDepth, self.quiet)
-            print('simul', b)
-            self.pigWins +=  1
+            #the following line is a bug when you are not in quiet mode - bug source can be found in line 62? it says bug below in line 61
+            self.pigWins +=  b
         print ('pig win rate:', float(self.pigWins)/float(self.num))
         return
 

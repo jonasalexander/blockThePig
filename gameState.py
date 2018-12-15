@@ -157,15 +157,13 @@ class GameState():
 		pigs_escape = 0
 		for pigId in range(self.numPigs):
 			if self.isEscaped(pigId):
-				pigs_escape += 1
+				pigs_escape += 1.
 
-		score = round((pigs_escape / self.numPigs), 2)
-		print('GS', score)
+		score = round((pigs_escape / float(self.numPigs)),4)
 		return score
 			
 
 	def getLegalMoves(self, pos=None):
-
 		if not pos is None or self.players[self.turn].isPig:
 			# get pig's possible moves
 			if pos is None:
