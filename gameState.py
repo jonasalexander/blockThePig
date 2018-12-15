@@ -38,6 +38,22 @@ class GameState():
 		# last move (to be able to deduce optimal move from optimal game state)
 		self.lastMove = None
 		
+
+
+		# Add pig(s)
+		t = numPigs
+		while True:
+			if t == 0:
+				break
+			buffer_row = rows//3
+			buffer_col = cols//3
+			x = random.randrange(buffer_row, rows - buffer_row)
+			y = random.randrange(buffer_col, cols - buffer_col)
+			if self.grid[x][y] == 0:
+				self.pigPositions.append((x, y))
+				self.grid[x][y] = 1
+				t -= 1
+
 		# Add rocks
 		t = numBlocks
 		while True:
@@ -49,19 +65,7 @@ class GameState():
 				self.grid[x][y] = -1
 				t -= 1
 
-		# Add pig(s)
-		t = numPigs
-		while True:
-			if t == 0:
-				break
-			buffer_row = rows//3
-			buffer_col = cols//3
-			x = random.randrange(buffer_row, rows-buffer_row)
-			y = random.randrange(buffer_col, cols-buffer_col)
-			if self.grid[x][y] == 0:
-				self.pigPositions.append((x, y))
-				self.grid[x][y] = 1
-				t -= 1
+		
 
 	def incrementTurn(self):
 		self.turn = (self.turn+1)%len(self.players)
@@ -112,11 +116,21 @@ class GameState():
 
 	def isEscaped(self, pigId):
 		i, j = self.pigPositions[pigId]
-		if(i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1):
-			#self.players.remove()
-			return True
-		else:
-			return False
+		return (i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1)
+
+		# if i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1:
+		# 	for ind, x in enumerate(self.players):
+		# 		if x.isPig:
+		# 			if x.pigId == pigId:
+		# 				bad_pig = self.players.pop(ind)
+		# 				print('b', bad_pig)
+		# 	return True
+		# return False
+		# if(i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1):
+		# 	#self.players.remove()
+		# 	return True
+		# else:
+		# 	return False
 
 	def allPigsEscaped(self):
 		for pigId in range(self.numPigs):
@@ -139,6 +153,16 @@ class GameState():
 				return False
 		return True
 
+	def nPigsEscaped(self):
+		pigs_escape = 0
+		for pigId in range(self.numPigs):
+			if self.isEscaped(pigId):
+				pigs_escape += 1
+
+		score = round((pigs_escape / self.numPigs), 2)
+		print('GS', score)
+		return score
+			
 
 	def getLegalMoves(self, pos=None):
 

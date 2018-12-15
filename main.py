@@ -19,15 +19,21 @@ def cleanUp():
 		pass
 
 def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
+	print(quiet)
 
 	# will iterate through players for turns
-	if(gameType=="minimax"):
-		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
-	elif(gameType=="simple"):
+	if(gameType=="simple"):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
+	elif(gameType=="minimax"):
+		# at the moment the depth is hardocoded into stone agent - depth 2 - we really need to do some pruning 
+		# TODO: pruning
+		# TODO: minimaPigAgent
+		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
 
 	# Init game state
+	
 	GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents, quiet=quiet)
+	
 	# Tkinter window config
 	if(not quiet):
 		window = tk.Toplevel()
@@ -35,83 +41,41 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		window.minsize(width=500, height=500)
 		window.protocol('WM_DELETE_WINDOW', cleanUp)
 
+	# Draw window
+	if(not quiet):
+		GS.draw(window)
 
-	# Simple Pig Agent Gameplay
-	if gameType == 'simple':
-
-		# Draw window
-		if(not quiet):
-			GS.draw(window)
-
-		def update():
-			if GS.allPigsEscaped():
-				print ('All pigs escaped!')
-				if(not quiet):
-					cleanUp()
-				return True
-
-			if GS.allPigsCaptured():
-				print ('All pigs captured!')
-				if(not quiet):
-					cleanUp()
-				return False
-
-			elif GS.allPigsEscapedOrCaptued():
-				print ('All pigs either escaped or captured!')
-				if(not quiet):
-					cleanUp()
-				return False
-
-			GS.play() # where the magic happens
+	def update():
+		print('update')
+		if GS.allPigsEscaped() or GS.allPigsCaptured() or GS.allPigsEscapedOrCaptued():
+			print ('Game ended')
 			if(not quiet):
-				GS.draw(window)
-				root.after(TIME_DELAY, update)
-			else:
-				return update()
+				cleanUp()
+			# TODO: Count number of pigs escaped 
+			
+			score = GS.nPigsEscaped()
+			print('main', score)
+			return score
 
+		GS.play() # where the magic happens
 		if(not quiet):
+			print('notq')
+			GS.draw(window)
+			print('l0', update())
 			root.after(TIME_DELAY, update)
+
 		else:
-			return update()
+			print('q')
+			print('l1', update())
+			return(0 + update())
 
-	# Mini-max Agent Gameplay
-	elif gameType == 'minimax':
-		print(quiet)
-		# # will iterate through players for turns
-		# players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
+	if(not quiet):
+		root.after(TIME_DELAY, update)
+	else:
+		print('l2', update())
+		return( 0 + update())
 
-		# # Init game state
-		# GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
-
-		# Draw window
-		if(not quiet):
-			GS.draw(window)
-
-		def update():
-			if GS.allPigsEscaped():
-				print ('All pigs escaped!')
-				if(not quiet):
-					cleanUp()
-				return True
-			
-			if GS.allPigsCaptured():
-				print ('All pigs captured!')
-				if(not quiet):
-					cleanUp()
-				return False
-			
-			GS.play() # where the magic happens
-			if(not quiet):
-				GS.draw(window)
-				root.after(TIME_DELAY, update)
-			else: 
-				return update()
-
-		if(not quiet):
-			root.after(TIME_DELAY, update)
-		else: 
-			return update()
-
+	#
 	if(not quiet):
 		root.mainloop()
 
