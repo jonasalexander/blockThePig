@@ -35,6 +35,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 	# Simple Pig Agent Gameplay
 	if gameType == 'simple':
+		print('hey')
 
 		# # will iterate through players for turns
 		# players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
@@ -52,7 +53,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 				if(not quiet):
 					cleanUp()
 				return True
-			
+
 			if GS.allPigsCaptured():
 				print ('All pigs captured!')
 				if(not quiet):
@@ -64,7 +65,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 				if(not quiet):
 					cleanUp()
 				return False
-			
+
 			GS.play() # where the magic happens
 			if(not quiet):
 				GS.draw(window)
@@ -74,7 +75,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 		if(not quiet):
 			root.after(TIME_DELAY, update)
-		else: 
+		else:
 			return update()
 
 	# Mini-max Agent Gameplay
@@ -117,7 +118,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 	if(not quiet):
 		root.mainloop()
-	
+
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
