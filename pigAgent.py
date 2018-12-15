@@ -35,7 +35,7 @@ class simplePigAgent(pigAgent):
 		
 class minimaxPigAgent(pigAgent):
 	def __init__(self):
-		super(minimaxPigAgent, self).__init__(pigId)
+		super(minimaxPigAgent, self).__init__(self.pigId)
 		return
 
 	def play(self, GS):
