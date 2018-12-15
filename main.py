@@ -21,9 +21,9 @@ def cleanUp():
 def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 	# will iterate through players for turns
-	if(gameType=="simple"):
+	if(gameType=="minimax"):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
-	elif(gameType=="minimax"):
+	elif(gameType=="simple"):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
 
 	# Init game state
