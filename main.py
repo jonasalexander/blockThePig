@@ -105,13 +105,13 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 			GS.play() # where the magic happens
 			if(not GS.quiet):
 				root.after(TIME_DELAY, update)
-			else:
-				update()
+			else: 
+				return update()
 
 		if(not GS.quiet):
 			root.after(TIME_DELAY, update)
-		else:
-			update()
+		else: 
+			return update()
 
 	if(not GS.quiet):
 		root.mainloop()
