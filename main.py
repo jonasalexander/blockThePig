@@ -105,12 +105,12 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 			if(not GS.quiet):
 				root.after(TIME_DELAY, update)
 			else: 
-				update()
+				return update()
 
 		if(not GS.quiet):
 			root.after(TIME_DELAY, update)
 		else: 
-			update()
+			return update()
 
 	if(not GS.quiet):
 		root.mainloop()
