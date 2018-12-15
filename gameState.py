@@ -112,14 +112,19 @@ class GameState():
 
 	def isEscaped(self, pigId):
 		i, j = self.pigPositions[pigId]
-		if i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1:
-			for ind, x in enumerate(self.players):
-				if x.isPig:
-					if x.pigId == pigId:
-						bad_pig = self.players.pop(ind)
-						print('b', bad_pig)
+		# if i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1:
+		# 	for ind, x in enumerate(self.players):
+		# 		if x.isPig:
+		# 			if x.pigId == pigId:
+		# 				bad_pig = self.players.pop(ind)
+		# 				print('b', bad_pig)
+		# 	return True
+		# return False
+		if(i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1):
+			#self.players.remove()
 			return True
-		return False
+		else:
+			return False
 
 	def allPigsEscaped(self):
 		for pigId in range(self.numPigs):

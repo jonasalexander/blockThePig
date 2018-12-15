@@ -16,6 +16,5 @@ def sumPigDistanceToEdge(GS):
 	return s
 
 #def TankHeuristic(GS):
-
-	#moves = GS.getLegalMoves(self,)
-	#put a block and check how pig is influenced... 
+# 	#moves = GS.getLegalMoves(self,)
+# 	#put a block and check how pig is influenced... 
