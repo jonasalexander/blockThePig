@@ -118,7 +118,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-
+	pigWins = 0
 	# Optional Arguments
 	parser.add_argument('-ns', help='Number of stone agents.', dest='numStoneAgents', default=1, type=int)
 	parser.add_argument('-np', help='Number of pig agents.', dest='numPigAgents', default=1, type=int)
@@ -139,4 +139,3 @@ if __name__ == '__main__':
 	# 		main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
 	# 		print ("pig wins at", n, ":", pigWins)
 	# print ('pig win rate:', pigWins/args.iterations)
-
