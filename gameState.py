@@ -10,7 +10,7 @@ class GameState():
 
 	defaultBlocks = 15
 
-	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None):
+	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None, quiet=False):
 		if numBlocks is None:
 			numBlocks = GameState.defaultBlocks
 		if numBlocks > rows*cols:
@@ -20,6 +20,7 @@ class GameState():
 		if numPigs is None:
 			numPigs = 1
 
+		self.quiet = quiet
 		self.rows = rows
 		self.cols = cols
 		self.numPigs = numPigs
