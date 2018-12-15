@@ -32,13 +32,39 @@ class simplePigAgent(pigAgent):
 			return
 
 		GS.movePig(move, self.pigId)
-		
+
+
+#at the momeny just copied part of stone agent to pig agent
 class minimaxPigAgent(pigAgent):
+
+	defaultDepth = 1
+
+
 	def __init__(self):
-		super(minimaxPigAgent, self).__init__(self.pigId)
-		return
+		if  maxDepth is None:
+			maxDepth = minimaxPigAgent.defaultDepth
+
+		self.maxDepth = maxDepth  
+		super(minimaxPigAgent, self).__init__(pigId)
+
+		return 
 
 	def play(self, GS):
+		root = minimaxNode(GS, None)
+		current = root
+
+		# while True
+		# 	if current is None:
+		# 		break 
+
+		# 				if current.simpleDepth >= self.maxDepth*len(GS.players):
+		# 		# we're at max depth
+		# 		# so just evaluate with heuristic 
+		# 		# and move on to sibling node
+		# 		current.favoriteChildValue = heuristics.sumPigDistanceToEdge(current.GS)
+		# 		if current.parent is None:
+		# 			break # have finished exploring
+
 
 		return
 
