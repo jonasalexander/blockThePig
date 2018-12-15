@@ -27,7 +27,9 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
 
 	# Init game state
+	
 	GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents, quiet=quiet)
+	
 	# Tkinter window config
 	if(not quiet):
 		window = tk.Toplevel()

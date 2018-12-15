@@ -38,6 +38,22 @@ class GameState():
 		# last move (to be able to deduce optimal move from optimal game state)
 		self.lastMove = None
 		
+
+
+		# Add pig(s)
+		t = numPigs
+		while True:
+			if t == 0:
+				break
+			buffer_row = rows//3
+			buffer_col = cols//3
+			x = random.randrange(buffer_row, rows - buffer_row)
+			y = random.randrange(buffer_col, cols - buffer_col)
+			if self.grid[x][y] == 0:
+				self.pigPositions.append((x, y))
+				self.grid[x][y] = 1
+				t -= 1
+
 		# Add rocks
 		t = numBlocks
 		while True:
@@ -49,19 +65,7 @@ class GameState():
 				self.grid[x][y] = -1
 				t -= 1
 
-		# Add pig(s)
-		t = numPigs
-		while True:
-			if t == 0:
-				break
-			buffer_row = rows//3
-			buffer_col = cols//3
-			x = random.randrange(buffer_row, rows-buffer_row)
-			y = random.randrange(buffer_col, cols-buffer_col)
-			if self.grid[x][y] == 0:
-				self.pigPositions.append((x, y))
-				self.grid[x][y] = 1
-				t -= 1
+		
 
 	def incrementTurn(self):
 		self.turn = (self.turn+1)%len(self.players)

@@ -20,10 +20,10 @@ class simplePigAgent(pigAgent):
 	def play(self, GS):
 
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			if(GS.isEscaped(self.pigId)):
-				#GS.players.remove(self)
-				x, y = GS.pigPositions[self.pigId]
-				GS.grid[x][y] = 0
+			# if(GS.isEscaped(self.pigId)):
+			# 	#GS.players.remove(self)
+			# 	x, y = GS.pigPositions[self.pigId]
+			# 	GS.grid[x][y] = 0
 			GS.incrementTurn()
 			return
 
