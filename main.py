@@ -44,23 +44,11 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 			GS.draw(window)
 
 		def update():
-			if GS.allPigsEscaped():
-				print ('All pigs escaped!')
+			if GS.allPigsEscaped() or GS.allPigsCaptured() or GS.allPigsEscapedOrCaptued():
+				print ('Game ended')
 				if(not quiet):
 					cleanUp()
 				return True
-
-			if GS.allPigsCaptured():
-				print ('All pigs captured!')
-				if(not quiet):
-					cleanUp()
-				return False
-
-			elif GS.allPigsEscapedOrCaptued():
-				print ('All pigs either escaped or captured!')
-				if(not quiet):
-					cleanUp()
-				return False
 
 			GS.play() # where the magic happens
 			if(not quiet):
