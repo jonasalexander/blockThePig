@@ -26,7 +26,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 	# Init game state
 	GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents, quiet=quiet)
 	# Tkinter window config
-	if(not GS.quiet):
+	if(not quiet):
 		window = tk.Toplevel()
 		window.title('Block The Pig')
 		window.minsize(width=500, height=500)
@@ -43,43 +43,43 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		# GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
 
 		# Draw window
-		if(not GS.quiet):
+		if(not quiet):
 			GS.draw(window)
 
 		def update():
 			if GS.allPigsEscaped():
 				print ('All pigs escaped!')
-				if(not GS.quiet):
+				if(not quiet):
 					cleanUp()
 				return True
 			
 			if GS.allPigsCaptured():
 				print ('All pigs captured!')
-				if(not GS.quiet):
+				if(not quiet):
 					cleanUp()
 				return False
 
 			elif GS.allPigsEscapedOrCaptued():
 				print ('All pigs either escaped or captured!')
-				if(not GS.quiet):
+				if(not quiet):
 					cleanUp()
 				return False
 			
 			GS.play() # where the magic happens
-			if(not GS.quiet):
+			if(not quiet):
 				GS.draw(window)
 				root.after(TIME_DELAY, update)
 			else:
 				return update()
 
-		if(not GS.quiet):
+		if(not quiet):
 			root.after(TIME_DELAY, update)
 		else: 
 			return update()
 
 	# Mini-max Agent Gameplay
 	elif gameType == 'minimax':
-
+		print(quiet)
 		# # will iterate through players for turns
 		# players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent(maxDepth) for _ in range(numStoneAgents)]
 
@@ -87,32 +87,35 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		# GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents)
 
 		# Draw window
-		if(not GS.quiet):
+		if(not quiet):
 			GS.draw(window)
 
 		def update():
 			if GS.allPigsEscaped():
 				print ('All pigs escaped!')
-				cleanUp()
-				return (True)
+				if(not quiet):
+					cleanUp()
+				return True
 			
 			if GS.allPigsCaptured():
 				print ('All pigs captured!')
-				cleanUp()
-				return (False)
+				if(not quiet):
+					cleanUp()
+				return False
 			
 			GS.play() # where the magic happens
-			if(not GS.quiet):
+			if(not quiet):
+				GS.draw(window)
 				root.after(TIME_DELAY, update)
 			else: 
 				return update()
 
-		if(not GS.quiet):
+		if(not quiet):
 			root.after(TIME_DELAY, update)
 		else: 
 			return update()
 
-	if(not GS.quiet):
+	if(not quiet):
 		root.mainloop()
 	
 
