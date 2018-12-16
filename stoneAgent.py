@@ -67,6 +67,16 @@ class complexStoneAgent(stoneAgent):
 		best_move = util.diff_between_boards(GS.grid, best_world.grid)
 
 		GS.placeBlock(best_move)
+
+
+
+
+			
+
+		#get a list of all xy of 6 around make sure they are valid - double count on purpose. 
+
+		# once we have that iterate through all places you can move a stonek keeping a max stone
+		
 		
 
 class minimaxStoneAgent(stoneAgent):
