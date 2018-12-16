@@ -41,8 +41,6 @@ class minimaxNode():
 		self.exploredCounter += 1
 		return r
 
-	#cobfused
-
 	# Propagate children's heuristic values up the tree
 	def findBestChild(self, compare):
 		# if no children (for example because pig escaped/captured)
