@@ -37,13 +37,50 @@ class simpleStoneAgent(stoneAgent):
 		GS.placeBlock(move)
 
 
-# class complexStoneAgent(stoneAgent):
+class complexStoneAgent(stoneAgent):
 
-# 	def __init__(self):
-# 		super(simpleStoneAgent, self).__init()
-# 		return
+	def __init__(self):
+		super(complexStoneAgent, self).__init__()
+		return
 
-# 	def play(self, GS):
+	
+	def play(self, GS):
+		pigIds = range(GS.numPigs)
+
+		real_neighbours = []
+		for i in pigIds:
+			neighbours = GS.getLegalMoves(GS.pigPositions[i])
+			real_neighbours += neighbours
+
+		
+		# print(real_neighbours)
+		nextMoves = GS.allNextStoneStates()
+		# print('NM', nextMoves)
+		list_scores = []
+		print('first----STATE')
+		for k in nextMoves:
+			
+			print(k.grid)
+
+			score = [] 
+			for j in real_neighbours:
+				score.append(util.BFS_numerical(k, j))
+			# print(list_scores)
+
+			list_scores.append(score)
+
+		print(list_scores)
+	
+
+		# we have all real neighbours
+
+
+			
+
+		#get a list of all xy of 6 around make sure they are valid - double count on purpose. 
+
+		# once we have that iterate through all places you can move a stonek keeping a max stone
+		
 		
 
 class minimaxStoneAgent(stoneAgent):

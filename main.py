@@ -23,6 +23,8 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 	# will iterate through players for turns
 	if(gameType=="simple"):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
+	elif(gameType == "latanc"):
+		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.complexStoneAgent() for _ in range(numStoneAgents)]
 	elif(gameType=="minimax"):
 		# at the moment the depth is hardocoded into stone agent - depth 2 - we really need to do some pruning 
 		# TODO: pruning

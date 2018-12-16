@@ -94,6 +94,40 @@ def optimalPigNextStep(GS, pigId):
 	return path[1]
 
 
+def BFS_numerical(GS, location):
+	# Use BFS/Djikstra to figure out path
+	fringe = []
+	visited = set()
+	visited.add(location)
+	level = 1
+
+	fringe.append(location)
+	fringe.append(None)
+	while fringe:
+		v = fringe.pop(0)
+		if v == None:
+			# print('level')
+			level += 1
+			fringe.append(None)
+			continue
+
+		else:
+			i,j = v
+			if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
+				return 0 
+
+			visited.add(v) 
+			neighbours = GS.getAlmostLegalMoves(v)
+			for node in neighbours:
+				# print('inside', 'v', v, 'n', node,  neighbours)
+				if node not in visited:
+					fringe.append(node)
+					visited.add(node)
+					i, j = node
+					if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
+						return level 
+
+
 
 
 
