@@ -114,7 +114,7 @@ def BFS_numerical(GS, location):
 			fringe.append(None)
 			if v_old == None:
 				print('escaping loop of death', location, fringe)
-				return(100)
+				return(level + 3)
 			else:
 				v_old = None
 		else:
@@ -126,13 +126,26 @@ def BFS_numerical(GS, location):
 			visited.add(v) 
 			neighbours = GS.getAlmostLegalMoves(v)
 			for node in neighbours:
-				# print('inside', 'v', v, 'n', node,  neighbours)
 				if node not in visited:
 					fringe.append(node)
 					visited.add(node)
 					i, j = node
 					if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
 						return level 
+
+
+def diff_between_boards(grid1, grid2):
+	counter_outer = 0
+	for i,j in zip(grid1, grid2):
+		counter_inner = 0
+		for k,l in zip(i,j):
+			if k != l:
+				return(counter_outer, counter_inner)
+			counter_inner += 1
+		
+		counter_outer += 1
+	
+	raise Exception('boards are the same')
 
 
 

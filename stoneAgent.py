@@ -43,51 +43,30 @@ class complexStoneAgent(stoneAgent):
 		super(complexStoneAgent, self).__init__()
 		return
 
-	
 	def play(self, GS):
-		print('ENTER PLAY')
 		pigIds = range(GS.numPigs)
 
-
-		# get all neighbours of pigs. 
-		real_neighbours = []
+		pigzz = []
 		for i in pigIds:
-			neighbours = GS.getLegalMoves(GS.pigPositions[i])
-			real_neighbours += neighbours
+			pigzz.append(GS.pigPositions[i])
 
-		real_neighbours.sort(key=lambda x:x[0]) 
-
-		normal_scores = []
-		for n in real_neighbours:
-			normal_scores.append(util.BFS_numerical(GS, n))
-		
-		
-		# print(real_neighbours)
 		nextMoves = GS.allNextStoneStates()
-		# print('NM', nextMoves)
+
 		list_scores = []
 		for k in nextMoves:
-			print('GRID', )
-			for i in k.grid:
-				print(i)
 			score = []
-			for j, x in enumerate(real_neighbours):
-				if k.fieldIsStone(x):
-					score.append(normal_scores[j] + 1)
-				else:
-					# print('called')
-					score.append(util.BFS_numerical(k, x))
+			for pos in pigzz:
+				score.append(util.BFS_numerical(k, pos))
 
-			list_scores.append((sum(score),x))
-		
-		
+			list_scores.append((sum(score), k))
 
 
 		list_scores.sort(key = lambda x:x[0], reverse = True)
-		print('list_scores', list_scores)
-		sc, move = list_scores[0]
+		_, best_world = list_scores[0]
 
-		GS.placeBlock(move)
+		best_move = util.diff_between_boards(GS.grid, best_world.grid)
+
+		GS.placeBlock(best_move)
 
 
 

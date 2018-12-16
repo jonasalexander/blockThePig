@@ -42,54 +42,53 @@ class GameState():
 
 		# Add pig(s)
 		t = numPigs
-		self.grid[2][2] = 1
-		self.pigPositions.append((2, 2))
- 		# while True:
-		# 	if t == 0:
-		# 		break
-		# 	buffer_row = rows//3
-		# 	buffer_col = cols//3
-		# 	x = random.randrange(buffer_row, rows - buffer_row)
-		# 	y = random.randrange(buffer_col, cols - buffer_col)
-		# 	if self.grid[x][y] == 0:
-		# 		self.pigPositions.append((x, y))
-		# 		self.grid[x][y] = 1
-		# 		t -= 1
+
+ 		while True:
+			if t == 0:
+				break
+			buffer_row = rows//3
+			buffer_col = cols//3
+			x = random.randrange(buffer_row, rows - buffer_row)
+			y = random.randrange(buffer_col, cols - buffer_col)
+			if self.grid[x][y] == 0:
+				self.pigPositions.append((x, y))
+				self.grid[x][y] = 1
+				t -= 1
 
 		# Add rocks
-		# t = numBlocks
-		# while True:
-		# 	if t == 0:
-		# 		break
-		# 	x = random.randrange(rows)
-		# 	y = random.randrange(cols)
-		# 	if self.grid[x][y] == 0:
-		# 		self.grid[x][y] = -1
-		# 		t -= 1
+		t = numBlocks
+		while True:
+			if t == 0:
+				break
+			x = random.randrange(rows)
+			y = random.randrange(cols)
+			if self.grid[x][y] == 0:
+				self.grid[x][y] = -1
+				t -= 1
 
-		self.grid[0][0]  = -1
-		self.grid[0][1]  = -1
-		self.grid[0][2]  = -1
-		self.grid[0][3]  = -1
-		self.grid[0][4]  = -1
-		self.grid[0][5]  = -1
-		self.grid[5][0]  = -1
-		self.grid[5][1]  = -1
-		self.grid[5][2]  = -1
-		self.grid[5][3]  = -1
-		self.grid[5][4]  = -1
-		self.grid[5][5]  = -1
-		self.grid[0][0]  = -1
-		self.grid[1][0]  = -1
-		self.grid[2][0]  = -1
-		self.grid[3][0]  = -1
-		self.grid[4][0]  = -1
-		self.grid[5][0]  = -1
-		self.grid[0][5]  = -1
-		self.grid[1][5]  = -1
-		self.grid[2][5]  = -1
-		self.grid[3][5]  = -1
-		self.grid[5][0]  = -1
+		# self.grid[0][0]  = -1
+		# self.grid[0][1]  = -1
+		# self.grid[0][2]  = -1
+		# self.grid[0][3]  = -1
+		# self.grid[0][4]  = -1
+		# self.grid[0][5]  = -1
+		# self.grid[5][0]  = -1
+		# self.grid[5][1]  = -1
+		# self.grid[5][2]  = -1
+		# self.grid[5][3]  = -1
+		# self.grid[5][4]  = -1
+		# self.grid[5][5]  = -1
+		# self.grid[0][0]  = -1
+		# self.grid[1][0]  = -1
+		# self.grid[2][0]  = -1
+		# self.grid[3][0]  = -1
+		# self.grid[4][0]  = -1
+		# self.grid[5][0]  = -1
+		# self.grid[0][5]  = -1
+		# self.grid[1][5]  = -1
+		# self.grid[2][5]  = -1
+		# self.grid[3][5]  = -1
+		# self.grid[5][0]  = -1
 		
 
 
