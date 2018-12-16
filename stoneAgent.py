@@ -37,13 +37,46 @@ class simpleStoneAgent(stoneAgent):
 		GS.placeBlock(move)
 
 
-# class complexStoneAgent(stoneAgent):
+class complexStoneAgent(stoneAgent):
 
-# 	def __init__(self):
-# 		super(simpleStoneAgent, self).__init()
-# 		return
+	def __init__(self):
+		super(complexStoneAgent, self).__init__()
+		return
 
-# 	def play(self, GS):
+	def play(self, GS):
+		pigIds = range(GS.numPigs)
+
+		pigzz = []
+		for i in pigIds:
+			pigzz.append(GS.pigPositions[i])
+
+		nextMoves = GS.allNextStoneStates()
+
+		list_scores = []
+		for k in nextMoves:
+			score = []
+			for pos in pigzz:
+				score.append(util.BFS_numerical(k, pos))
+
+			list_scores.append((sum(score), k))
+
+
+		list_scores.sort(key = lambda x:x[0], reverse = True)
+		_, best_world = list_scores[0]
+
+		best_move = util.diff_between_boards(GS.grid, best_world.grid)
+
+		GS.placeBlock(best_move)
+
+
+
+
+			
+
+		#get a list of all xy of 6 around make sure they are valid - double count on purpose. 
+
+		# once we have that iterate through all places you can move a stonek keeping a max stone
+		
 		
 
 class minimaxStoneAgent(stoneAgent):

@@ -42,7 +42,8 @@ class GameState():
 
 		# Add pig(s)
 		t = numPigs
-		while True:
+
+ 		while True:
 			if t == 0:
 				break
 			buffer_row = rows//3
@@ -65,10 +66,40 @@ class GameState():
 				self.grid[x][y] = -1
 				t -= 1
 
+		# self.grid[0][0]  = -1
+		# self.grid[0][1]  = -1
+		# self.grid[0][2]  = -1
+		# self.grid[0][3]  = -1
+		# self.grid[0][4]  = -1
+		# self.grid[0][5]  = -1
+		# self.grid[5][0]  = -1
+		# self.grid[5][1]  = -1
+		# self.grid[5][2]  = -1
+		# self.grid[5][3]  = -1
+		# self.grid[5][4]  = -1
+		# self.grid[5][5]  = -1
+		# self.grid[0][0]  = -1
+		# self.grid[1][0]  = -1
+		# self.grid[2][0]  = -1
+		# self.grid[3][0]  = -1
+		# self.grid[4][0]  = -1
+		# self.grid[5][0]  = -1
+		# self.grid[0][5]  = -1
+		# self.grid[1][5]  = -1
+		# self.grid[2][5]  = -1
+		# self.grid[3][5]  = -1
+		# self.grid[5][0]  = -1
+		
+
+
+
+
+
 		
 
 	def incrementTurn(self):
 		self.turn = (self.turn+1)%len(self.players)
+
 
 	def placeBlock(self, pos):
 		x, y = pos
@@ -103,6 +134,11 @@ class GameState():
 				shortestPathLen = len(path)
 		return shortestPathLen
 
+	def fieldIsAlmostEmpty(self, pos):
+		x,y = pos
+		return (self.grid[x][y] != -1)
+	
+	
 	def fieldIsEmpty(self, pos):
 		x, y = pos
 		return self.grid[x][y] == 0
@@ -173,6 +209,52 @@ class GameState():
 
 		score = round((pigs_escape / float(self.numPigs)),4)
 		return score
+
+	#we are kind of allowing pigs to go over each other 
+	def getAlmostLegalMoves(self, pos=None):
+		x, y = pos
+
+		#if it is a stone ignore
+		if self.fieldIsStone(pos) == -1:
+			return []
+
+		moves = []
+
+		#even row 
+		if x%2 == 0:
+			if x != 0:
+				moves.append((x-1,y)) # top right
+			if x != self.rows-1:
+				moves.append((x+1,y)) # bottom right
+			if y != self.cols-1:
+				moves.append((x,y+1)) # right
+			if y != 0:
+				moves.append((x, y-1)) # left
+				if x != 0:
+					moves.append((x-1,y-1)) # top left
+				if x != self.rows - 1:
+					moves.append((x+1, y-1)) # bottom left
+
+		#odd row
+		else:
+			moves.append((x-1,y)) # top left
+			if y != 0:
+				moves.append((x, y-1)) # left
+				if x != self.rows-1:
+					moves.append((x+1, y)) # bottom left
+			if y != self.cols -1:
+				moves.append((x,y+1)) # right
+				moves.append((x-1, y+1)) # top right
+				if x != self.rows-1:
+					moves.append((x+1, y+1)) # bottom right
+
+		# remove all moves *to* stones/blocked fields
+		new_moves = []
+		for v in moves:
+			if self.fieldIsAlmostEmpty(v):
+				new_moves.append(v)
+
+		return new_moves
 			
 
 	def getLegalMoves(self, pos=None):
@@ -238,6 +320,17 @@ class GameState():
 
 	def play(self):
 		self.players[self.turn].play(self)
+
+
+	def allNextStoneStates(self):
+		nextStates = []
+		moves = self.getLegalMoves()
+		for move in moves:
+				moveGS = deepcopy(self)
+				moveGS.placeBlock(move)
+				nextStates.append(moveGS)			
+		return nextStates
+
 
 	def allNextStates(self):
 		# generate all possible states from all possible moves in getLegalMoves
