@@ -94,6 +94,7 @@ class GameState():
 
 	def distanceToNearestPig(self, pos):
 		shortestPathLen = float("inf")
+		path = None
 		for pigId in range(self.numPigs):
 			path = BFSPath(self, pigId, pos)
 			if path is None:
@@ -116,7 +117,13 @@ class GameState():
 
 	def isEscaped(self, pigId):
 		i, j = self.pigPositions[pigId]
+		#print "i, j", i, j
 		return (i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1)
+			#print "pig escaped:", pigId
+		# 	self.players[pigId].isEscaped = True
+		# 	return True
+		# else:
+		# 	return False
 
 		# if i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1:
 		# 	for ind, x in enumerate(self.players):
@@ -139,7 +146,12 @@ class GameState():
 		return True
 
 	def isCaptured(self, pigId):
-		return optimalPigNextStep(self, pigId) is None and not self.isEscaped(pigId)
+		return (optimalPigNextStep(self, pigId) is None and not self.isEscaped(pigId))
+			#print "pig captured:", pigId
+			#self.players[pigId].isCaptured = True
+		# 	return True
+		# else:
+		# 	return False
 
 	def allPigsCaptured(self):
 		for pigId in range(self.numPigs):

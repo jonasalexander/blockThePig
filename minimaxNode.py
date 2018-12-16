@@ -63,6 +63,7 @@ class minimaxNode():
 		best = self.children[0].favoriteChildValue
 		fav = [self.children[0]]
 		for child in self.children:
+			#print("Fav child value:", self.favoriteChildValue)
 			if compare(child.favoriteChildValue, best):
 				fav = [child]
 				best = child.favoriteChildValue
@@ -81,6 +82,7 @@ class minimaxNode():
 				# option is a minimaxNode
 				newDist = option.GS.distanceToNearestPig(option.GS.lastMove)
 				if compare(newDist, bestDist):
+					print "TIE", (option.GS.lastMove)
 					bestDist = newDist
 					tieBreaker = [option]
 				elif newDist == bestDist:

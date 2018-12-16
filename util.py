@@ -47,7 +47,7 @@ def BFSPathToEdge(GS, pigId):
 	while next != GS.pigPositions[pigId]:
 		next, final = parent[next], next
 		path.append(next)
-
+	
 	return path[::-1]
 
 def BFSPath(GS, pigId, goal):
@@ -84,7 +84,6 @@ def BFSPath(GS, pigId, goal):
 	while next != GS.pigPositions[pigId]:
 		next, final = parent[next], next
 		path.append(next)
-
 	return path[::-1]
 
 def optimalPigNextStep(GS, pigId):

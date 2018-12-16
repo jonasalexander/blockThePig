@@ -19,7 +19,7 @@ def cleanUp():
 		pass
 
 def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
-
+	players = []
 	# will iterate through players for turns
 	if(gameType=="simple"):
 		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.simpleStoneAgent() for _ in range(numStoneAgents)]
@@ -27,8 +27,7 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		# at the moment the depth is hardocoded into stone agent - depth 2 - we really need to do some pruning 
 		# TODO: pruning
 		# TODO: minimaPigAgent
-		players = [pigAgent.simplePigAgent(i) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
-
+		players = [pigAgent.minimaxPigAgent(i, maxDepth) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
 	# Init game state
 	
 	GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents, quiet=quiet)

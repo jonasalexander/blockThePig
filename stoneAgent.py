@@ -56,6 +56,7 @@ class minimaxStoneAgent(stoneAgent):
 		self.maxDepth = maxDepth
 		super(minimaxStoneAgent, self).__init__()
 
+
 	def play(self, GS):
 		root = minimaxNode(GS, None)
 		current = root
@@ -84,9 +85,17 @@ class minimaxStoneAgent(stoneAgent):
 			# no more children of this node left to explore
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
-				if current.GS.isPigTurn():
+				# if current.GS.isPigTurn():
+				# 	compare = 'min'
+				# else:
+				# 	compare = 'max'
+				# current.findBestChild(compare)
+				#print ("simple depth", current.simpleDepth)
+				if(current.simpleDepth%len(GS.players) > 0):
+					#print "in stoneAgent, is pigTurn"
 					compare = 'min'
 				else:
+					#print "in stoneAgent, is stoneTurn"
 					compare = 'max'
 				current.findBestChild(compare)
 
@@ -100,6 +109,7 @@ class minimaxStoneAgent(stoneAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
+		print("placing stone optimally", move, "with", root.favoriteChildValue)
 		GS.placeBlock(move)
 
 
