@@ -45,7 +45,6 @@ class complexStoneAgent(stoneAgent):
 
 	def play(self, GS):
 		pigIds = range(GS.numPigs)
-
 		pigzz = []
 		for i in pigIds:
 			pigzz.append(GS.pigPositions[i])
@@ -53,6 +52,13 @@ class complexStoneAgent(stoneAgent):
 		nextMoves = GS.allNextStoneStates()
 
 		list_scores = []
+
+		# go through all possible places you could put the stone
+		# calculate new bfs each time 
+		# i had to do some strange stuff when the the new world
+		#locks it in place / traps the pig
+		# parameter prob needs tuning in BFS numerical 
+		
 		for k in nextMoves:
 			score = []
 			for pos in pigzz:
