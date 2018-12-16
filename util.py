@@ -96,6 +96,7 @@ def optimalPigNextStep(GS, pigId):
 
 def BFS_numerical(GS, location):
 	# Use BFS/Djikstra to figure out path
+
 	fringe = []
 	visited = set()
 	visited.add(location)
@@ -103,15 +104,21 @@ def BFS_numerical(GS, location):
 
 	fringe.append(location)
 	fringe.append(None)
+
+	v_old = 0
+
 	while fringe:
 		v = fringe.pop(0)
 		if v == None:
-			# print('level')
 			level += 1
 			fringe.append(None)
-			continue
-
+			if v_old == None:
+				print('escaping loop of death', location, fringe)
+				return(100)
+			else:
+				v_old = None
 		else:
+			v_old = v 
 			i,j = v
 			if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
 				return 0 

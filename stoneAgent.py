@@ -45,34 +45,51 @@ class complexStoneAgent(stoneAgent):
 
 	
 	def play(self, GS):
+		print('ENTER PLAY')
 		pigIds = range(GS.numPigs)
 
+
+		# get all neighbours of pigs. 
 		real_neighbours = []
 		for i in pigIds:
 			neighbours = GS.getLegalMoves(GS.pigPositions[i])
 			real_neighbours += neighbours
 
+		real_neighbours.sort(key=lambda x:x[0]) 
+
+		normal_scores = []
+		for n in real_neighbours:
+			normal_scores.append(util.BFS_numerical(GS, n))
+		
 		
 		# print(real_neighbours)
 		nextMoves = GS.allNextStoneStates()
 		# print('NM', nextMoves)
 		list_scores = []
-		print('first----STATE')
 		for k in nextMoves:
-			
-			print(k.grid)
+			print('GRID', )
+			for i in k.grid:
+				print(i)
+			score = []
+			for j, x in enumerate(real_neighbours):
+				if k.fieldIsStone(x):
+					score.append(normal_scores[j] + 1)
+				else:
+					# print('called')
+					score.append(util.BFS_numerical(k, x))
 
-			score = [] 
-			for j in real_neighbours:
-				score.append(util.BFS_numerical(k, j))
-			# print(list_scores)
+			list_scores.append((sum(score),x))
+		
+		
 
-			list_scores.append(score)
 
-		print(list_scores)
-	
+		list_scores.sort(key = lambda x:x[0], reverse = True)
+		print('list_scores', list_scores)
+		sc, move = list_scores[0]
 
-		# we have all real neighbours
+		GS.placeBlock(move)
+
+
 
 
 			
