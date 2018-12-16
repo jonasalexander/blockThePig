@@ -7,6 +7,11 @@ STATES = ['free', 'pig', 'block']
 MAXDEPTH = 8
 TIME_DELAY = 500
 
+
+# def beststone(GS):	
+# 	for i in GS.
+# 	i,j = GS.pigPositions[pigID]
+
 def BFSPathToEdge(GS, pigId):
 	# Use BFS/Djikstra to figure out path
 	fringe = []

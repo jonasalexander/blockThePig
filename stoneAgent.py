@@ -22,6 +22,7 @@ class simpleStoneAgent(stoneAgent):
 	def play(self, GS):
 
 		pigId = random.randint(0, GS.numPigs-1)
+		print('pigID',pigId)
 		while GS.isEscaped(pigId) or GS.isCaptured(pigId):
 			# choose a different pig
 			pigId = random.randint(0, GS.numPigs-1) 
@@ -34,6 +35,16 @@ class simpleStoneAgent(stoneAgent):
 			return
 
 		GS.placeBlock(move)
+
+
+# class complexStoneAgent(stoneAgent):
+
+# 	def __init__(self):
+# 		super(simpleStoneAgent, self).__init()
+# 		return
+
+# 	def play(self, GS):
+		
 
 class minimaxStoneAgent(stoneAgent):
 
