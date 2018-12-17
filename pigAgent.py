@@ -155,6 +155,8 @@ class alphaBetaPigAgent(pigAgent):
 			return
 		root = minimaxNode(GS, None)
 		current = root
+		a =float("-inf")
+		b=float("inf")
 
 		while True:
 			if current is None:
@@ -181,18 +183,13 @@ class alphaBetaPigAgent(pigAgent):
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
 				if current.GS.isPigTurn():
+				# if(current.simpleDepth%len(GS.players) < GS.numPigs):
 					compare = 'min'
 				else:
 					compare = 'max'
-				# current.findBestChild(compare)
 
-				# if(current.simpleDepth%len(GS.players) < GS.numPigs):
-				# 	#print "in stoneAgent, is pigTurn"
-				# 	compare = 'min'
-				# else:
-				# 	#print "in stoneAgent, is stoneTurn"
-				# 	compare = 'max'
-				current.findBestChildPruned(compare, float("-inf"), float("-inf"))
+				a, b = current.findBestChildPruned(compare, a, b)
+				print "Pig", (a, b)
 
 				if current.parent is None:
 					break # have finished exploring

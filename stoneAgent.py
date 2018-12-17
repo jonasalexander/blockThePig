@@ -164,6 +164,8 @@ class alphaBetaStoneAgent(stoneAgent):
 	def play(self, GS):
 		root = minimaxNode(GS, None)
 		current = root
+		a =float("-inf")
+		b=float("inf")
 
 		while True:
 			if current is None:
@@ -189,19 +191,15 @@ class alphaBetaStoneAgent(stoneAgent):
 			# no more children of this node left to explore
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
+				# if(current.simpleDepth%len(GS.players) > 0):
 				if current.GS.isPigTurn():
 					compare = 'min'
 				else:
 					compare = 'max'
 				# current.findBestChild(compare)
 
-				# if(current.simpleDepth%len(GS.players) > 0):
-				# 	#print "in stoneAgent, is pigTurn"
-				# 	compare = 'min'
-				# else:
-				# 	#print "in stoneAgent, is stoneTurn"
-				# 	compare = 'max'
-				current.findBestChildPruned(compare, float("-inf"), float("-inf"))
+				a, b = current.findBestChildPruned(compare, a, b)
+				print "Stone", (a, b)
 
 				if current.parent is None:
 					break # have finished exploring

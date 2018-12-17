@@ -101,7 +101,8 @@ class minimaxNode():
 		if len(self.children) == 0:
 			self.favoriteChild = None
 			self.favoriteChildValue = 0
-			return
+			return a, b
+
 		small = True
 		# allows flexibility to use same function for pig and stoneAgent
 		if compare == 'min':
@@ -118,6 +119,7 @@ class minimaxNode():
 		best = self.children[0].favoriteChildValue
 		fav = [self.children[0]]
 
+		# Abstracted this bit out
 		# tie breaker: distance of proposed stone placement to nearest pig
 		def tiebreak():
 			bestDist = float("inf")
@@ -134,6 +136,7 @@ class minimaxNode():
 			# (if still multiple children, random tie breaker)
 			# but will just select only value if now only 1 value
 			self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
+			#print self.favoriteChild.GS.lastMove
 
 		for child in self.children:
 			#print("Fav child value:", self.favoriteChildValue)
@@ -143,31 +146,34 @@ class minimaxNode():
 			elif child.favoriteChildValue == best:
 				fav.append(child)
 
+
+			#pruning work
 			if(small):
 				# print "small triggered"
 				b = min(b, best)
 				if(best < a):
 					self.favoriteChildValue = best
 					tiebreak()
-					return 
+					return a, b
 			elif(not small):
 				# print "large triggered"
 				a = max(a, best)
 				if(best > b):
 					self.favoriteChildValue = best
 					tiebreak()
-					return 	
+					return a, b
 		self.favoriteChildValue = best
 
 		# if multiple favorite children, use tie breaker
 		# intuition: works well if multiple placements along same corridor
 		# towards exit possible (can just choose placement closest to pig)
 		if len(fav) > 1:
+			#this should set self.favoriteChild
 			tiebreak()
-			return
+			return a, b
 		else:
 			self.favoriteChild = fav[0] # easy if one clearly favored child
-			return
+			return a,b
 
 
 		
