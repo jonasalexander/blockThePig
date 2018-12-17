@@ -113,8 +113,11 @@ def BFS_numerical(GS, location):
 			level += 1
 			fringe.append(None)
 			if v_old == None:
-				print('escaping loop of death', location, fringe)
-				return(level + 3)
+				# print('escaping loop of death', location, fringe)
+				if level == 1 or level == 2:
+					return 10
+				else:
+					return(level)
 			else:
 				v_old = None
 		else:

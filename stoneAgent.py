@@ -22,7 +22,7 @@ class simpleStoneAgent(stoneAgent):
 	def play(self, GS):
 
 		pigId = random.randint(0, GS.numPigs-1)
-		print('pigID',pigId)
+		# print('pigID',pigId)
 		while GS.isEscaped(pigId) or GS.isCaptured(pigId):
 			# choose a different pig
 			pigId = random.randint(0, GS.numPigs-1) 
@@ -51,27 +51,40 @@ class complexStoneAgent(stoneAgent):
 
 		nextMoves = GS.allNextStoneStates()
 
+		original_score = 0 
+		for pos in pigzz:
+			original_score += util.BFS_numerical(GS, pos)
+
 		list_scores = []
 
-		# go through all possible places you could put the stone
-		# calculate new bfs each time 
-		# i had to do some strange stuff when the the new world
-		#locks it in place / traps the pig
-		# parameter prob needs tuning in BFS numerical 
-		
 		for k in nextMoves:
+			# print('grid')
+			# for one in k.grid:
+				# print(one)
+
 			score = []
 			for pos in pigzz:
 				score.append(util.BFS_numerical(k, pos))
+				# print('score', score)
 
 			list_scores.append((sum(score), k))
 
 
 		list_scores.sort(key = lambda x:x[0], reverse = True)
-		_, best_world = list_scores[0]
+		# print(list_scores[0])
 
-		best_move = util.diff_between_boards(GS.grid, best_world.grid)
+		if list_scores[0][0] != original_score:
+			_, best_world = list_scores[0]
+			best_move = util.diff_between_boards(GS.grid, best_world.grid)
+		else:
+			for pos in pigIds:
+				if GS.isCaptured(pos) or GS.isEscaped(pos):
+					continue
+				else:
+					best_move = util.optimalPigNextStep(GS, pos)
 
+
+		
 		GS.placeBlock(best_move)
 
 
