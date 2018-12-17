@@ -95,6 +95,76 @@ class minimaxNode():
 		# but will just select only value if now only 1 value
 		self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
 
+	# Propagate children's heuristic values up the tree
+	def findBestChildPruned(self, compare, a, b):
+		# if no children (for example because pig escaped/captured)
+		if len(self.children) == 0:
+			self.favoriteChild = None
+			self.favoriteChildValue = 0
+			return
+		small = True
+		# allows flexibility to use same function for pig and stoneAgent
+		if compare == 'min':
+			def smaller(v1, v2): return v1 < v2
+			compare = smaller
+		elif compare == 'max':
+			def larger(v1, v2): return v1 > v2
+			compare = larger
+			small = False
+		else:
+			raise Exception("Received unexpeced type of comparison in findBestChild.")
+		
+		# find best value(s) among children
+		best = self.children[0].favoriteChildValue
+		fav = [self.children[0]]
+		for child in self.children:
+			#print("Fav child value:", self.favoriteChildValue)
+			if compare(child.favoriteChildValue, best):
+				fav = [child]
+				best = child.favoriteChildValue
+			elif child.favoriteChildValue == best:
+				fav.append(child)
+
+			if(small):
+				b = min(b, best)
+				if(best < a):
+					self.favoriteChildValue = best
+					self.favoriteChild = fav[0]
+					return 
+			elif(not small):
+				a = max(a, best)
+				if(best > b):
+					self.favoriteChildValue = best
+					self.favoriteChild = fav[0]
+					return 
+				
+
+		self.favoriteChildValue = best
+
+		# if multiple favorite children, use tie breaker
+		# intuition: works well if multiple placements along same corridor
+		# towards exit possible (can just choose placement closest to pig)
+		if len(fav) > 1:
+			# tie breaker: distance of proposed stone placement to nearest pig
+			bestDist = float("inf")
+			tieBreaker = []
+			for option in fav:
+				# option is a minimaxNode
+				newDist = option.GS.distanceToNearestPig(option.GS.lastMove)
+				if compare(newDist, bestDist):
+					print "TIE", (option.GS.lastMove)
+					bestDist = newDist
+					tieBreaker = [option]
+				elif newDist == bestDist:
+					tieBreaker.append(option)
+		else:
+			self.favoriteChild = fav[0] # easy if one clearly favored child
+			return
+
+		# (if still multiple children, random tie breaker)
+		# but will just select only value if now only 1 value
+		self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
+
 	def __str__(self):
 		print ('Printing minimaxNode instance:')
 		print ('self.GS.grid: ' + str(self.GS.grid))

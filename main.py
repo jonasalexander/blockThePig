@@ -28,6 +28,8 @@ def main(gameType, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 		# TODO: pruning
 		# TODO: minimaPigAgent
 		players = [pigAgent.minimaxPigAgent(i, maxDepth) for i in range(numPigAgents)] + [stoneAgent.minimaxStoneAgent() for _ in range(numStoneAgents)]
+	elif(gameType=="alphaBeta"):
+		players = [pigAgent.alphaBetaPigAgent(i) for i in range(numPigAgents)] + [stoneAgent.alphaBetaStoneAgent() for _ in range(numStoneAgents)]
 	# Init game state
 	
 	GS = GameState(N_ROWS, N_COLS, players, numPigs=numPigAgents, quiet=quiet)
@@ -81,6 +83,7 @@ if __name__ == '__main__':
 
 	parser.add_argument('-s', help='Play simple game.', dest='simpleGame', action='store_true')
 	parser.add_argument('-m', help='Play minimax game.', dest='minimax', action='store_true')
+	parser.add_argument('-ab', help='Play alpha beta minimax game.', dest='alphaBeta', action='store_true')
 	parser.add_argument('-d', help='If minimax game, the depth of the states the agents should explore.', dest='maxDepth',  default=None, type=int)
 	parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
 
@@ -93,5 +96,9 @@ if __name__ == '__main__':
 	elif args.minimax:
 		for n in range(args.iterations):
 			main('minimax', args.numStoneAgents, args.numPigAgents, args.maxDepth)
+			print ("pig wins at", n, ":", pigWins)
+	elif args.alphaBeta:
+		for n in range(args.iterations):
+			main('alphaBeta', args.numStoneAgents, args.numPigAgents, args.maxDepth)
 			print ("pig wins at", n, ":", pigWins)
 	print ('pig win rate:', pigWins/args.iterations)

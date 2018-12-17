@@ -65,7 +65,7 @@ class minimaxPigAgent(pigAgent):
 			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
-			
+
 		root = minimaxNode(GS, None)
 		current = root
 
@@ -131,7 +131,80 @@ class minimaxPigAgent(pigAgent):
 		# 			break # have finished exploring
 
 
-		return
+		#return
 
+class alphaBetaPigAgent(pigAgent):
+
+	defaultDepth = 2
+
+	def __init__(self, pigId, maxDepth = None):
+		if maxDepth is None:
+			maxDepth = alphaBetaPigAgent.defaultDepth
+		self.maxDepth = maxDepth
+		super(alphaBetaPigAgent, self).__init__(pigId)
+
+
+	def play(self, GS):
+		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
+			# if(GS.isEscaped(self.pigId)):
+			# 	#GS.players.remove(self)
+			# 	x, y = GS.pigPositions[self.pigId]
+			# 	GS.grid[x][y] = 0
+			print ("captured", self.pigId, "SKIP")
+			GS.incrementTurn()
+			return
+		root = minimaxNode(GS, None)
+		current = root
+
+		while True:
+			if current is None:
+				break
+
+			if current.simpleDepth >= self.maxDepth*len(GS.players):
+				# we're at max depth
+				# so just evaluate with heuristic 
+				# and move on to sibling node
+				current.favoriteChildValue = heuristics.sumPigDistanceToEdge(current.GS)
+				if current.parent is None:
+					break # have finished exploring
+
+				# recurse up the tree
+				current = current.parent
+				newCurrent = current.nextNode()
+
+			else:
+				# expand child nodes
+				current.addChildren(current.GS.allNextStates())
+				newCurrent = current.nextNode() # get next child (down a level)
+
+			# no more children of this node left to explore
+			while newCurrent is None:
+				# find favorite child for subtree we're done with
+				# if current.GS.isPigTurn():
+				# 	compare = 'min'
+				# else:
+				# 	compare = 'max'
+				# current.findBestChild(compare)
+				#print ("simple depth", current.simpleDepth)
+				if(current.simpleDepth%len(GS.players) < GS.numPigs):
+					#print "in stoneAgent, is pigTurn"
+					compare = 'min'
+				else:
+					#print "in stoneAgent, is stoneTurn"
+					compare = 'max'
+				current.findBestChildPruned(compare, float("-inf"), float("-inf"))
+
+				if current.parent is None:
+					break # have finished exploring
+				
+				# recurse up the tree
+				current = current.parent
+				newCurrent = current.nextNode()
+
+			current = newCurrent
+		
+		move = root.favoriteChild.GS.lastMove
+		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "with", root.favoriteChildValue)
+		GS.movePig(move, self.pigId)
 
 	
