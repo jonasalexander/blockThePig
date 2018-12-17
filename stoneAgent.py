@@ -141,8 +141,8 @@ class minimaxStoneAgent(stoneAgent):
 				# else:
 				# 	compare = 'max'
 				# current.findBestChild(compare)
-				#print ("simple depth", current.simpleDepth)
-				if(current.simpleDepth%len(GS.players) > 0):
+				if current.GS.isPigTurn():
+				#if(current.simpleDepth%len(GS.players) > 0):
 					#print "in stoneAgent, is pigTurn"
 					compare = 'min'
 				else:
@@ -165,7 +165,7 @@ class minimaxStoneAgent(stoneAgent):
 
 class alphaBetaStoneAgent(stoneAgent):
 
-	defaultDepth = 4
+	defaultDepth = 2
 
 	def __init__(self, maxDepth = None):
 		if maxDepth is None:
@@ -208,7 +208,7 @@ class alphaBetaStoneAgent(stoneAgent):
 			v = v_best
 
 			successors = GS.allNextStatesWithMoves()
-			#print("Max len legal moves", len(successors))
+			# print("Stone: Max len legal moves", len(successors))
 			
 			topAction = successors.keys()[0]
 
