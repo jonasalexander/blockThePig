@@ -117,35 +117,9 @@ class minimaxNode():
 		# find best value(s) among children
 		best = self.children[0].favoriteChildValue
 		fav = [self.children[0]]
-		for child in self.children:
-			#print("Fav child value:", self.favoriteChildValue)
-			if compare(child.favoriteChildValue, best):
-				fav = [child]
-				best = child.favoriteChildValue
-			elif child.favoriteChildValue == best:
-				fav.append(child)
 
-			if(small):
-				b = min(b, best)
-				if(best < a):
-					self.favoriteChildValue = best
-					self.favoriteChild = fav[0]
-					return 
-			elif(not small):
-				a = max(a, best)
-				if(best > b):
-					self.favoriteChildValue = best
-					self.favoriteChild = fav[0]
-					return 
-				
-
-		self.favoriteChildValue = best
-
-		# if multiple favorite children, use tie breaker
-		# intuition: works well if multiple placements along same corridor
-		# towards exit possible (can just choose placement closest to pig)
-		if len(fav) > 1:
-			# tie breaker: distance of proposed stone placement to nearest pig
+		# tie breaker: distance of proposed stone placement to nearest pig
+		def tiebreak():
 			bestDist = float("inf")
 			tieBreaker = []
 			for option in fav:
@@ -157,13 +131,46 @@ class minimaxNode():
 					tieBreaker = [option]
 				elif newDist == bestDist:
 					tieBreaker.append(option)
+			# (if still multiple children, random tie breaker)
+			# but will just select only value if now only 1 value
+			self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
+
+		for child in self.children:
+			#print("Fav child value:", self.favoriteChildValue)
+			if compare(child.favoriteChildValue, best):
+				fav = [child]
+				best = child.favoriteChildValue
+			elif child.favoriteChildValue == best:
+				fav.append(child)
+
+			if(small):
+				# print "small triggered"
+				b = min(b, best)
+				if(best < a):
+					self.favoriteChildValue = best
+					tiebreak()
+					return 
+			elif(not small):
+				# print "large triggered"
+				a = max(a, best)
+				if(best > b):
+					self.favoriteChildValue = best
+					tiebreak()
+					return 	
+		self.favoriteChildValue = best
+
+		# if multiple favorite children, use tie breaker
+		# intuition: works well if multiple placements along same corridor
+		# towards exit possible (can just choose placement closest to pig)
+		if len(fav) > 1:
+			tiebreak()
+			return
 		else:
 			self.favoriteChild = fav[0] # easy if one clearly favored child
 			return
 
-		# (if still multiple children, random tie breaker)
-		# but will just select only value if now only 1 value
-		self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
+
+		
 
 	def __str__(self):
 		print ('Printing minimaxNode instance:')

@@ -180,18 +180,18 @@ class alphaBetaPigAgent(pigAgent):
 			# no more children of this node left to explore
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
-				# if current.GS.isPigTurn():
-				# 	compare = 'min'
-				# else:
-				# 	compare = 'max'
-				# current.findBestChild(compare)
-				#print ("simple depth", current.simpleDepth)
-				if(current.simpleDepth%len(GS.players) < GS.numPigs):
-					#print "in stoneAgent, is pigTurn"
+				if current.GS.isPigTurn():
 					compare = 'min'
 				else:
-					#print "in stoneAgent, is stoneTurn"
 					compare = 'max'
+				# current.findBestChild(compare)
+
+				# if(current.simpleDepth%len(GS.players) < GS.numPigs):
+				# 	#print "in stoneAgent, is pigTurn"
+				# 	compare = 'min'
+				# else:
+				# 	#print "in stoneAgent, is stoneTurn"
+				# 	compare = 'max'
 				current.findBestChildPruned(compare, float("-inf"), float("-inf"))
 
 				if current.parent is None:
