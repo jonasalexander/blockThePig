@@ -348,6 +348,28 @@ class GameState():
 
 		return nextStates
 
+	def allNextStatesWithMoves(self):
+		# generate all possible states from all possible moves in getLegalMoves
+		nextStates = {}
+			
+		moves = self.getLegalMoves()
+
+		if self.isPigTurn():
+			# do each move
+			for move in moves:
+				moveGS = deepcopy(self)
+				moveGS.movePig(move, self.players[self.turn].pigId)
+				nextStates[move] = (moveGS)
+
+		else:
+			# do each move
+			for move in moves:
+				moveGS = deepcopy(self)
+				moveGS.placeBlock(move)
+				nextStates[move] = (moveGS)
+
+		return nextStates
+
 	def draw(self, window):
 		prevCanvas = window.winfo_children()
 		if prevCanvas:

@@ -40,6 +40,7 @@ class minimaxNode():
 		r = self.children[self.exploredCounter]
 		self.exploredCounter += 1
 		return r
+		# Propagate children's heuristic values up the tree
 
 	# Propagate children's heuristic values up the tree
 	def findBestChild(self, compare):

@@ -152,7 +152,7 @@ class minimaxStoneAgent(stoneAgent):
 
 class alphaBetaStoneAgent(stoneAgent):
 
-	defaultDepth = 2
+	defaultDepth = 4
 
 	def __init__(self, maxDepth = None):
 		if maxDepth is None:
@@ -160,8 +160,66 @@ class alphaBetaStoneAgent(stoneAgent):
 		self.maxDepth = maxDepth
 		super(alphaBetaStoneAgent, self).__init__()
 
-
 	def play(self, GS):
+		def minValue(GS, d, p, a, b):
+			if GS.allPigsEscapedOrCaptued():
+				return GS.nPigsEscaped()
+			
+			v_best = float("inf") 
+			v = v_best
+
+			successors = GS.allNextStatesWithMoves()
+			#print("Min len legal moves", len(successors))
+
+			for move, successor in successors.items():
+				if(p==GS.numPigs):
+					if(d == self.maxDepth-1):
+						v = heuristics.sumPigDistanceToEdge(successor)
+					else:
+						v = maxValue(successor, d+1 ,a , b)
+				else:
+					v = minValue(successor, d, p+1, a, b)
+
+				if v < v_best:
+					v_best = v 
+				if v_best < a:
+					return v_best
+				b = min(b, v_best)
+			return v_best
+				
+		def maxValue(GS, d, a, b):
+			if GS.allPigsEscapedOrCaptued():
+				return GS.nPigsEscaped()
+			
+			v_best = float("-inf") 
+			v = v_best
+
+			successors = GS.allNextStatesWithMoves()
+			#print("Max len legal moves", len(successors))
+			
+			topAction = successors.keys()[0]
+
+			for move, successor in successors.items():
+				v = minValue(successor, d, 1, a, b)
+				if v > v_best:
+					v_best = v 
+					topAction = move
+
+				if v_best > b:
+					return v_best 
+
+				a = max(a, v_best)
+
+				if(d == 0):
+					return topAction
+				else:
+					return v_best
+
+		move = maxValue(GS, 0, float("-inf"), float("inf"))
+		print("placing stone optimally", move)
+		GS.placeBlock(move)
+
+	def play2(self, GS):
 		root = minimaxNode(GS, None)
 		current = root
 		a =float("-inf")
