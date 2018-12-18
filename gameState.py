@@ -8,7 +8,7 @@ from pigAgent import pigAgent
 
 class GameState():	
 
-	defaultBlocks = 15
+	defaultBlocks = 25
 
 	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None, quiet=False):
 		if numBlocks is None:
