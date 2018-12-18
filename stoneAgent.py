@@ -29,8 +29,6 @@ class rrandomStoneAgent(stoneAgent):
 
 class simpleStoneAgent(stoneAgent):
 
-	
-
 	def play(self, GS):
 
 		pigId = random.randint(0, GS.numPigs-1)
@@ -70,23 +68,16 @@ class complexStoneAgent(stoneAgent):
 		list_scores = []
 
 		for k in nextMoves:
-			# print('grid')
-			# for one in k.grid:
-				# print(one)
-
 			score = []
 			for pos, ids in zip(pigzz, pigIds):
 				if GS.isCaptured(ids) or GS.isEscaped(ids):
 					continue
 
 				score.append(util.BFS_numerical(k, pos))
-				# print('score', score)
 
 			list_scores.append((sum(score), k))
 
-
 		list_scores.sort(key = lambda x:x[0], reverse = True)
-		# print(list_scores[0])
 
 		if list_scores[0][0] != original_score:
 			_, best_world = list_scores[0]
@@ -150,18 +141,9 @@ class minimaxStoneAgent(stoneAgent):
 
 			# no more children of this node left to explore
 			while newCurrent is None:
-				# find favorite child for subtree we're done with
-				# if current.GS.isPigTurn():
-				# 	compare = 'min'
-				# else:
-				# 	compare = 'max'
-				# current.findBestChild(compare)
 				if current.GS.isPigTurn():
-				#if(current.simpleDepth%len(GS.players) > 0):
-					#print "in stoneAgent, is pigTurn"
 					compare = 'min'
 				else:
-					#print "in stoneAgent, is stoneTurn"
 					compare = 'max'
 				current.findBestChild(compare)
 
@@ -238,7 +220,6 @@ class alphaBetaStoneAgent(stoneAgent):
 			v = v_best
 
 			successors = GS.allNextStatesWithMoves()
-			# print("Stone: Max len legal moves", len(successors))
 			
 			topAction = []
 
@@ -264,7 +245,7 @@ class alphaBetaStoneAgent(stoneAgent):
 		print("placing stone optimally", move)
 		GS.placeBlock(move)
 
-	def play2(self, GS):
+	def playOriginal(self, GS):
 		root = minimaxNode(GS, None)
 		current = root
 		a =float("-inf")
@@ -294,15 +275,13 @@ class alphaBetaStoneAgent(stoneAgent):
 			# no more children of this node left to explore
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
-				# if(current.simpleDepth%len(GS.players) > 0):
 				if current.GS.isPigTurn():
 					compare = 'min'
 				else:
 					compare = 'max'
-				# current.findBestChild(compare)
+				current.findBestChild(compare)
 
 				a, b = current.findBestChildPruned(compare, a, b)
-				print "Stone", (a, b)
 
 				if current.parent is None:
 					break # have finished exploring

@@ -40,10 +40,6 @@ class simplePigAgent(pigAgent):
 	def play(self, GS):
 
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			# if(GS.isEscaped(self.pigId)):
-			# 	#GS.players.remove(self)
-			# 	x, y = GS.pigPositions[self.pigId]
-			# 	GS.grid[x][y] = 0
 			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
@@ -74,10 +70,6 @@ class minimaxPigAgent(pigAgent):
 
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			# if(GS.isEscaped(self.pigId)):
-			# 	#GS.players.remove(self)
-			# 	x, y = GS.pigPositions[self.pigId]
-			# 	GS.grid[x][y] = 0
 			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
@@ -110,15 +102,10 @@ class minimaxPigAgent(pigAgent):
 
 			# no more children of this node left to explore
 			while newCurrent is None:
-				# print "current.simpledepth", current.simpleDepth
-				#print "len(GS.players)", len(GS.players)
 				# find favorite child for subtree we're done with
 				if current.GS.isPigTurn():
-				#if(current.simpleDepth%len(GS.players) < GS.numPigs):
-					#print "in pigAgent, is pigTurn"
 					compare = 'min'
 				else:
-					#print "in pigAgent, is stoneTurn"
 					compare = 'max'
 
 				current.findBestChild(compare)
@@ -136,21 +123,6 @@ class minimaxPigAgent(pigAgent):
 		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "root:", root.favoriteChildValue)
 		GS.movePig(move, self.pigId)
 
-		# while True
-		# 	if current is None:
-		# 		break 
-
-		# 				if current.simpleDepth >= self.maxDepth*len(GS.players):
-		# 		# we're at max depth
-		# 		# so just evaluate with heuristic 
-		# 		# and move on to sibling node
-		# 		current.favoriteChildValue = heuristics.sumPigDistanceToEdge(current.GS)
-		# 		if current.parent is None:
-		# 			break # have finished exploring
-
-
-		#return
-
 class alphaBetaPigAgent(pigAgent):
 
 	defaultDepth = 2
@@ -163,10 +135,6 @@ class alphaBetaPigAgent(pigAgent):
 
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			# if(GS.isEscaped(self.pigId)):
-			# 	#GS.players.remove(self)
-			# 	x, y = GS.pigPositions[self.pigId]
-			# 	GS.grid[x][y] = 0
 			GS.incrementTurn()
 			return
 
@@ -212,7 +180,6 @@ class alphaBetaPigAgent(pigAgent):
 			v = v_best
 
 			successors = GS.allNextStatesWithMoves()
-			# print("Pig: Max len legal moves", len(successors))
 
 			for move, successor in successors.items():
 				v = minValue(successor, d+1, 1, a, b)
@@ -230,12 +197,8 @@ class alphaBetaPigAgent(pigAgent):
 		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move)
 		GS.movePig(move, self.pigId)
 
-	def play2(self, GS):
+	def playOriginal(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			# if(GS.isEscaped(self.pigId)):
-			# 	#GS.players.remove(self)
-			# 	x, y = GS.pigPositions[self.pigId]
-			# 	GS.grid[x][y] = 0
 			GS.incrementTurn()
 			return
 		root = minimaxNode(GS, None)
@@ -268,7 +231,6 @@ class alphaBetaPigAgent(pigAgent):
 			while newCurrent is None:
 				# find favorite child for subtree we're done with
 				if current.GS.isPigTurn():
-				# if(current.simpleDepth%len(GS.players) < GS.numPigs):
 					compare = 'min'
 				else:
 					compare = 'max'

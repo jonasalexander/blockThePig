@@ -15,7 +15,7 @@ def sumPigDistanceToEdge(GS):
 	
 	return s
 
-def TancHeuristic(GS):
+def sumAllPigDistanceToEdge(GS):
 	s = 0
 	for pigId in range(GS.numPigs):
 		if GS.isCaptured(pigId):
@@ -26,6 +26,3 @@ def TancHeuristic(GS):
 		s += len(BFS_numerical(GS, GS.pigPostions[pigId]))
 	
 	return s
-
-# 	#moves = GS.getLegalMoves(self,)
-# 	#put a block and check how pig is influenced... 

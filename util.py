@@ -7,11 +7,6 @@ STATES = ['free', 'pig', 'block']
 MAXDEPTH = 8
 TIME_DELAY = 500
 
-
-# def beststone(GS):	
-# 	for i in GS.
-# 	i,j = GS.pigPositions[pigID]
-
 def BFSPathToEdge(GS, pigId):
 	# Use BFS/Djikstra to figure out path
 	fringe = []
@@ -113,56 +108,6 @@ def BFS_numerical(GS, location):
 			level += 1
 			fringe.append(None)
 			if v_old == None:
-				# print('escaping loop of death', location, fringe)
-				if level == 1 or level == 2:
-					return 10
-				else:
-					return(level)
-			else:
-				v_old = None
-		else:
-			v_old = v 
-			i,j = v
-			if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
-				return 0 
-
-			visited.add(v) 
-			neighbours = GS.getAlmostLegalMoves(v)
-			for node in neighbours:
-				if node not in visited:
-					fringe.append(node)
-					visited.add(node)
-					i, j = node
-					if i == 0 or i == GS.cols-1 or j == 0 or j == GS.rows-1:
-						return level 
-
-
-def diff_between_boards(grid1, grid2):
-	counter_outer = 0
-	for i,j in zip(grid1, grid2):
-		counter_inner = 0
-		for k,l in zip(i,j):
-			if k != l:
-				return(counter_outer, counter_inner)
-			counter_inner += 1
-		
-		counter_outer += 1
-	
-	raise Exception('boards are the same')
-
-
-
-	fringe.append(location)
-	fringe.append(None)
-
-	v_old = 0
-
-	while fringe:
-		v = fringe.pop(0)
-		if v == None:
-			level += 1
-			fringe.append(None)
-			if v_old == None:
 				print('escaping loop of death', location, fringe)
 				return(level + 3)
 			else:
@@ -196,4 +141,3 @@ def diff_between_boards(grid1, grid2):
 		counter_outer += 1
 	
 	raise Exception('boards are the same')
-
