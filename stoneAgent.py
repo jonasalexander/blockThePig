@@ -63,7 +63,10 @@ class complexStoneAgent(stoneAgent):
 				# print(one)
 
 			score = []
-			for pos in pigzz:
+			for pos, ids in zip(pigzz, pigIds):
+				if GS.isCaptured(ids) or GS.isEscaped(ids):
+					continue
+
 				score.append(util.BFS_numerical(k, pos))
 				# print('score', score)
 
