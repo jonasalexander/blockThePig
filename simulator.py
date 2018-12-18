@@ -40,6 +40,6 @@ parser.add_argument('-n', help='Number of games to simulare', dest='iterations',
 parser.add_argument('-q', help='Whether to show graphics', dest='quiet', default = False, type  = bool )
 
 args = parser.parse_args()
-# print ("self.quiet", args.quiet)
+
 sim = Simulator(args.pigAgent, args.stoneAgent,  args.iterations, args.numStoneAgents, args.numPigAgents, args.maxDepth, args.quiet)
 sim.run()
