@@ -151,7 +151,6 @@ class alphaBetaPigAgent(pigAgent):
 			# 	#GS.players.remove(self)
 			# 	x, y = GS.pigPositions[self.pigId]
 			# 	GS.grid[x][y] = 0
-			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 
@@ -221,7 +220,6 @@ class alphaBetaPigAgent(pigAgent):
 			# 	#GS.players.remove(self)
 			# 	x, y = GS.pigPositions[self.pigId]
 			# 	GS.grid[x][y] = 0
-			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 		root = minimaxNode(GS, None)

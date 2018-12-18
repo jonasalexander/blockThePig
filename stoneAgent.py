@@ -174,6 +174,21 @@ class alphaBetaStoneAgent(stoneAgent):
 		super(alphaBetaStoneAgent, self).__init__()
 
 	def play(self, GS):
+		def tiebreak(actions):
+			bestDist = float("inf")
+			tiebreaker = []
+			for option in actions:
+				# option is a coordinate
+				newDist = GS.distanceToNearestPig(option)
+				if (newDist < bestDist):
+					bestDist = newDist
+					tiebreaker = [option]
+				elif newDist == bestDist:
+					tiebreaker.append(option)
+			r = random.randint(0, len(tiebreaker)-1)
+			print "len tiebreaker", len(tiebreaker), r
+			return tiebreaker[r]
+
 		def minValue(GS, d, p, a, b):
 			if GS.allPigsEscapedOrCaptued():
 				return GS.nPigsEscaped()
@@ -210,23 +225,25 @@ class alphaBetaStoneAgent(stoneAgent):
 			successors = GS.allNextStatesWithMoves()
 			# print("Stone: Max len legal moves", len(successors))
 			
-			topAction = successors.keys()[0]
+			topAction = []
 
-			for move, successor in successors.items():
+			for action, successor in successors.items():
 				v = minValue(successor, d, 1, a, b)
-				if v > v_best:
+				if v >= v_best:
 					v_best = v 
-					topAction = move
+					topAction.append(action)
 
 				if v_best > b:
 					return v_best 
 
 				a = max(a, v_best)
 
-				if(d == 0):
-					return topAction
-				else:
-					return v_best
+			if(d == 0):
+				if (len(topAction) > 1):
+					return tiebreak(topAction)
+				else: return topAction[0]
+			else:
+				return v_best
 
 		move = maxValue(GS, 0, float("-inf"), float("inf"))
 		print("placing stone optimally", move)
