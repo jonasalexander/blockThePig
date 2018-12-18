@@ -1,6 +1,7 @@
 from util import *
 from minimaxNode import minimaxNode
 import heuristics
+import random
 
 class pigAgent(object):
 
@@ -13,6 +14,21 @@ class pigAgent(object):
 
 	def play(self):
 		return
+
+class rrandomPigAgent(pigAgent):
+	def __init__(self, pigId):
+		super(rrandomPigAgent, self).__init__(pigId)
+		return
+
+	def play(self, GS):
+		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
+			print ("captured", self.pigId, "SKIP")
+			GS.incrementTurn()
+			return
+		
+		moves = GS.getLegalMoves()
+		best_move = random.choice(moves)
+		GS.movePig(best_move, self.pigId)
 
 
 class simplePigAgent(pigAgent):

@@ -12,12 +12,24 @@ class stoneAgent(object):
 
 	def play(self):
 		return
+	
+
+class rrandomStoneAgent(stoneAgent):
+
+	def __init__(self):
+		super(rrandomStoneAgent, self).__init__()
+		return
+
+	def play(self, GS):
+		nextMoves = GS.allNextStoneStates()
+		movezz = random.choice(nextMoves)
+		best_move = util.diff_between_boards(GS.grid, movezz.grid)
+		GS.placeBlock(best_move)
+
 
 class simpleStoneAgent(stoneAgent):
 
-	def __init__(self):
-		super(simpleStoneAgent, self).__init__()
-		return
+	
 
 	def play(self, GS):
 
