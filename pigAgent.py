@@ -23,7 +23,6 @@ class rrandomPigAgent(pigAgent):
 
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 		
@@ -42,7 +41,6 @@ class simplePigAgent(pigAgent):
 	def play(self, GS):
 
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 
@@ -58,7 +56,6 @@ class simplePigAgent(pigAgent):
 
 
 class minimaxPigAgent(pigAgent):
-	#minimax 
 
 	defaultDepth = 1
 
@@ -72,7 +69,6 @@ class minimaxPigAgent(pigAgent):
 
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			# print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 
@@ -88,7 +84,6 @@ class minimaxPigAgent(pigAgent):
 				# so just evaluate with heuristic 
 				# and move on to sibling node
 
-				#TODO: THIS IS WHERE WE CAN MAKE PIGS INDIVIDUAL AGENTS, just look at thir own distance?
 				current.favoriteChildValue = heuristics.sumPigDistanceToEdge(current.GS)
 				if current.parent is None:
 					break # have finished exploring
@@ -134,6 +129,7 @@ class alphaBetaPigAgent(pigAgent):
 		self.maxDepth = maxDepth
 		super(alphaBetaPigAgent, self).__init__(pigId)
 
+	#adapted from P2 multiagents.py
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
 			GS.incrementTurn()
@@ -236,7 +232,6 @@ class alphaBetaPigAgent(pigAgent):
 					compare = 'max'
 
 				a, b = current.findBestChildPruned(compare, a, b)
-				# print "Pig", (a, b)
 
 				if current.parent is None:
 					break # have finished exploring

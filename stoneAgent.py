@@ -40,7 +40,6 @@ class simpleStoneAgent(stoneAgent):
 
 		if move is None:
 			GS.incrementTurn()
-			print ('Pig can not find any next move')
 			return
 
 		GS.placeBlock(move)
@@ -92,17 +91,10 @@ class complexStoneAgent(stoneAgent):
 		
 		GS.placeBlock(best_move)
 
-
-
-
-			
-
 		#get a list of all xy of 6 around make sure they are valid - double count on purpose. 
 
-		# once we have that iterate through all places you can move a stonek keeping a max stone
+		# once we have that iterate through all places you can move a stone keeping a max stone
 		
-		
-
 class minimaxStoneAgent(stoneAgent):
 	defaultDepth = 1
 
@@ -168,6 +160,7 @@ class alphaBetaStoneAgent(stoneAgent):
 		self.maxDepth = maxDepth
 		super(alphaBetaStoneAgent, self).__init__()
 
+	#adapted from P2 multiagents.py
 	def play(self, GS):
 		def tiebreak(actions):
 			bestDist = float("inf")
@@ -181,7 +174,6 @@ class alphaBetaStoneAgent(stoneAgent):
 				elif newDist == bestDist:
 					tiebreaker.append(option)
 			r = random.randint(0, len(tiebreaker)-1)
-			# print "len tiebreaker", len(tiebreaker), r
 			return tiebreaker[r]
 
 		def minValue(GS, d, p, a, b):
@@ -192,7 +184,6 @@ class alphaBetaStoneAgent(stoneAgent):
 			v = v_best
 
 			successors = GS.allNextStatesWithMoves()
-			#print("Min len legal moves", len(successors))
 
 			for move, successor in successors.items():
 				if(p==GS.numPigs):

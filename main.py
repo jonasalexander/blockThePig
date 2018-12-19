@@ -26,7 +26,7 @@ def main(pigalgo, stonealgo, numStoneAgents, numPigAgents, maxDepth=None, quiet=
 	elif pigalgo == 'simple':
 		pigplayers =  [pigAgent.simplePigAgent(i) for i in range(numPigAgents)]
 	elif pigalgo == 'complex':
-		# TODO: there isnt really a pig complex agent... 
+		#there isnt really a pig complex agent so revert to simple
 		pigplayers =  [pigAgent.simplePigAgent(i) for i in range(numPigAgents)]
 	elif pigalgo == 'minimax':
 		pigplayers =  [pigAgent.minimaxPigAgent(i) for i in range(numPigAgents)]
@@ -68,7 +68,6 @@ def main(pigalgo, stonealgo, numStoneAgents, numPigAgents, maxDepth=None, quiet=
 		if GS.allPigsEscaped() or GS.allPigsCaptured() or GS.allPigsEscapedOrCaptued():
 			if(not quiet):
 				cleanUp()
-			# TODO: Count number of pigs escaped 
 			
 			score = GS.nPigsEscaped()
 			print ('Game ended with:', score)

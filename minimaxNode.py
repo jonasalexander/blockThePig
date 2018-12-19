@@ -28,8 +28,6 @@ class minimaxNode():
 	# Update children nodes with minimaxNodes from gameStates
 	def addChildren(self, childrenGS):
 		for state in childrenGS:
-			# TODO: we somehow need to prune this 
-			# ('trying to fid smt out, line 32 minimaxnode', state.moveBlock)
 			self.children.append(minimaxNode(state, self))
 
 	# essentially a .pop on the children that preserves the data
@@ -64,7 +62,6 @@ class minimaxNode():
 		best = self.children[0].favoriteChildValue
 		fav = [self.children[0]]
 		for child in self.children:
-			#print("Fav child value:", self.favoriteChildValue)
 			if compare(child.favoriteChildValue, best):
 				fav = [child]
 				best = child.favoriteChildValue
@@ -83,7 +80,6 @@ class minimaxNode():
 				# option is a minimaxNode
 				newDist = option.GS.distanceToNearestPig(option.GS.lastMove)
 				if compare(newDist, bestDist):
-					print "TIE", (option.GS.lastMove)
 					bestDist = newDist
 					tieBreaker = [option]
 				elif newDist == bestDist:
@@ -129,7 +125,6 @@ class minimaxNode():
 				# option is a minimaxNode
 				newDist = option.GS.distanceToNearestPig(option.GS.lastMove)
 				if compare(newDist, bestDist):
-					print "TIE", (option.GS.lastMove)
 					bestDist = newDist
 					tieBreaker = [option]
 				elif newDist == bestDist:
@@ -137,10 +132,8 @@ class minimaxNode():
 			# (if still multiple children, random tie breaker)
 			# but will just select only value if now only 1 value
 			self.favoriteChild = tieBreaker[random.randrange(len(tieBreaker))]
-			#print self.favoriteChild.GS.lastMove
 
 		for child in self.children:
-			#print("Fav child value:", self.favoriteChildValue)
 			if compare(child.favoriteChildValue, best):
 				fav = [child]
 				best = child.favoriteChildValue
@@ -150,14 +143,12 @@ class minimaxNode():
 
 			#pruning work
 			if(small):
-				# print "small triggered"
 				b = min(b, best)
 				if(best < a):
 					self.favoriteChildValue = best
 					tiebreak()
 					return a, b
 			elif(not small):
-				# print "large triggered"
 				a = max(a, best)
 				if(best > b):
 					self.favoriteChildValue = best
