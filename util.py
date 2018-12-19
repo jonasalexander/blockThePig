@@ -1,8 +1,9 @@
 from copy import deepcopy
 
 # Global vars
-N_ROWS = 6
-N_COLS = 6
+# YOU MIGHT WANT TO CHANGE THE DIMENSIONS OF THE MAP
+N_ROWS = 10
+N_COLS = 10
 STATES = ['free', 'pig', 'block']
 MAXDEPTH = 8
 TIME_DELAY = 500
@@ -129,6 +130,7 @@ def BFS_numerical(GS, location):
 						return level 
 
 
+# calulates difference between two boards - this is no longer necessary you can use last move
 def diff_between_boards(grid1, grid2):
 	counter_outer = 0
 	for i,j in zip(grid1, grid2):

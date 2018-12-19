@@ -11,6 +11,8 @@ class Point():
 	def __str__(self):
 		return 'x: ' + str(self.x) + '; y: ' + str(self.y)
 
+
+# for GUI
 class Hexagon():
 	sideLength = 20
 

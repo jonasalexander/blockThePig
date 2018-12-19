@@ -8,8 +8,8 @@ from pigAgent import pigAgent
 
 class GameState():	
 
-
-	defaultBlocks = 15
+	# default blocks is hardcoded here change as you please
+	defaultBlocks = 22
 
 	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None, quiet=False):
 		if numBlocks is None:
@@ -106,6 +106,7 @@ class GameState():
 				shortestPathLen = len(path)
 		return shortestPathLen
 
+	# used when you don't want to count pigs
 	def fieldIsAlmostEmpty(self, pos):
 		x,y = pos
 		return (self.grid[x][y] != -1)
@@ -159,7 +160,7 @@ class GameState():
 		score = round((pigs_escape / float(self.numPigs)),4)
 		return score
 
-	#we are kind of allowing pigs to go over each other 
+	#we are not  allowing pigs to go over each other 
 	def getAlmostLegalMoves(self, pos=None):
 		x, y = pos
 
@@ -323,6 +324,7 @@ class GameState():
 
 		return nextStates
 
+	# draw the game
 	def draw(self, window):
 		prevCanvas = window.winfo_children()
 		if prevCanvas:

@@ -16,6 +16,7 @@ def sumPigDistanceToEdge(GS):
 	return s
 
 def sumAllPigDistanceToEdge(GS):
+	# same but uses BFS numerical has a different tie breaking mechanism. 
 	s = 0
 	for pigId in range(GS.numPigs):
 		if GS.isCaptured(pigId):

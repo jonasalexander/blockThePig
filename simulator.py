@@ -35,7 +35,6 @@ parser.add_argument('-g', help='Game type.', dest='gameType', type = str, defaul
 parser.add_argument('-d', help='If minimax game, the depth of the states the agents should explore.', dest='maxDepth',  default=None, type=int)
 parser.add_argument('-n', help='Number of games to simulare', dest='iterations', type = int, default = 1)
 
-#this following line doenst do what i expect it to do. if you dont add anthing self.quit is False as per
 # default if you have eitherl -q True or -q False you get self.quite is True just fyi
 parser.add_argument('-q', help='Whether to show graphics', dest='quiet', default = False, type  = bool )
 

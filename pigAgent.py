@@ -16,6 +16,7 @@ class pigAgent(object):
 		return
 
 class rrandomPigAgent(pigAgent):
+	# just a random agent
 	def __init__(self, pigId):
 		super(rrandomPigAgent, self).__init__(pigId)
 		return
@@ -32,6 +33,7 @@ class rrandomPigAgent(pigAgent):
 
 
 class simplePigAgent(pigAgent):
+	#simpel agent that is greedy locally 
 
 	def __init__(self, pigId):
 		super(simplePigAgent, self).__init__(pigId)
@@ -55,8 +57,8 @@ class simplePigAgent(pigAgent):
 		GS.movePig(move, self.pigId)
 
 
-#at the momeny just copied part of stone agent to pig agent
 class minimaxPigAgent(pigAgent):
+	#minimax 
 
 	defaultDepth = 1
 
@@ -120,7 +122,6 @@ class minimaxPigAgent(pigAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "root:", root.favoriteChildValue)
 		GS.movePig(move, self.pigId)
 
 class alphaBetaPigAgent(pigAgent):
@@ -194,7 +195,6 @@ class alphaBetaPigAgent(pigAgent):
 			return v_best 
 
 		move = minValue(GS, 0, 1, float("-inf"), float("inf"))
-		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move)
 		GS.movePig(move, self.pigId)
 
 	def playOriginal(self, GS):
@@ -248,7 +248,6 @@ class alphaBetaPigAgent(pigAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "with", root.favoriteChildValue)
 		GS.movePig(move, self.pigId)
 
 	

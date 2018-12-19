@@ -20,7 +20,7 @@ def cleanUp():
 
 def main(pigalgo, stonealgo, numStoneAgents, numPigAgents, maxDepth=None, quiet=False):
 
-
+# calling the particular algorithms 
 	if pigalgo == 'random':
 		pigplayers =  [pigAgent.rrandomPigAgent(i) for i in range(numPigAgents)]
 	elif pigalgo == 'simple':
