@@ -1,8 +1,8 @@
 from copy import deepcopy
 
 # Global vars
-N_ROWS = 10
-N_COLS = 10
+N_ROWS = 6
+N_COLS = 6
 STATES = ['free', 'pig', 'block']
 MAXDEPTH = 8
 TIME_DELAY = 500

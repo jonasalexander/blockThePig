@@ -70,7 +70,7 @@ class minimaxPigAgent(pigAgent):
 
 	def play(self, GS):
 		if GS.isEscaped(self.pigId) or GS.isCaptured(self.pigId):
-			print ("captured", self.pigId, "SKIP")
+			# print ("captured", self.pigId, "SKIP")
 			GS.incrementTurn()
 			return
 
@@ -120,12 +120,12 @@ class minimaxPigAgent(pigAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "root:", root.favoriteChildValue)
+		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "root:", root.favoriteChildValue)
 		GS.movePig(move, self.pigId)
 
 class alphaBetaPigAgent(pigAgent):
 
-	defaultDepth = 2
+	defaultDepth = 1
 
 	def __init__(self, pigId, maxDepth = None):
 		if maxDepth is None:
@@ -194,7 +194,7 @@ class alphaBetaPigAgent(pigAgent):
 			return v_best 
 
 		move = minValue(GS, 0, 1, float("-inf"), float("inf"))
-		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move)
+		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move)
 		GS.movePig(move, self.pigId)
 
 	def playOriginal(self, GS):
@@ -236,7 +236,7 @@ class alphaBetaPigAgent(pigAgent):
 					compare = 'max'
 
 				a, b = current.findBestChildPruned(compare, a, b)
-				print "Pig", (a, b)
+				# print "Pig", (a, b)
 
 				if current.parent is None:
 					break # have finished exploring
@@ -248,7 +248,7 @@ class alphaBetaPigAgent(pigAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "with", root.favoriteChildValue)
+		# print("moving", self.pigId, "from", GS.pigPositions[self.pigId], "to", move, "with", root.favoriteChildValue)
 		GS.movePig(move, self.pigId)
 
 	

@@ -32,7 +32,6 @@ class simpleStoneAgent(stoneAgent):
 	def play(self, GS):
 
 		pigId = random.randint(0, GS.numPigs-1)
-		# print('pigID',pigId)
 		while GS.isEscaped(pigId) or GS.isCaptured(pigId):
 			# choose a different pig
 			pigId = random.randint(0, GS.numPigs-1) 
@@ -105,7 +104,7 @@ class complexStoneAgent(stoneAgent):
 		
 
 class minimaxStoneAgent(stoneAgent):
-	defaultDepth = 2
+	defaultDepth = 1
 
 	def __init__(self, maxDepth = None):
 		if maxDepth is None:
@@ -126,7 +125,7 @@ class minimaxStoneAgent(stoneAgent):
 				# we're at max depth
 				# so just evaluate with heuristic 
 				# and move on to sibling node
-				current.favoriteChildValue = heuristics.sumPigDistanceToEdge(current.GS)
+				current.favoriteChildValue = -1*heuristics.sumPigDistanceToEdge(current.GS)
 				if current.parent is None:
 					break # have finished exploring
 
@@ -157,12 +156,11 @@ class minimaxStoneAgent(stoneAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		print("placing stone optimally", move, "with", root.favoriteChildValue)
 		GS.placeBlock(move)
 
 class alphaBetaStoneAgent(stoneAgent):
 
-	defaultDepth = 2
+	defaultDepth = 1
 
 	def __init__(self, maxDepth = None):
 		if maxDepth is None:
@@ -183,7 +181,7 @@ class alphaBetaStoneAgent(stoneAgent):
 				elif newDist == bestDist:
 					tiebreaker.append(option)
 			r = random.randint(0, len(tiebreaker)-1)
-			print "len tiebreaker", len(tiebreaker), r
+			# print "len tiebreaker", len(tiebreaker), r
 			return tiebreaker[r]
 
 		def minValue(GS, d, p, a, b):
@@ -242,7 +240,6 @@ class alphaBetaStoneAgent(stoneAgent):
 				return v_best
 
 		move = maxValue(GS, 0, float("-inf"), float("inf"))
-		print("placing stone optimally", move)
 		GS.placeBlock(move)
 
 	def playOriginal(self, GS):
@@ -293,7 +290,6 @@ class alphaBetaStoneAgent(stoneAgent):
 			current = newCurrent
 		
 		move = root.favoriteChild.GS.lastMove
-		print("placing stone optimally", move, "with", root.favoriteChildValue)
 		GS.placeBlock(move)
 
 

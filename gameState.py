@@ -8,6 +8,7 @@ from pigAgent import pigAgent
 
 class GameState():	
 
+
 	defaultBlocks = 15
 
 	def __init__(self, rows, cols, players, numBlocks=None, numPigs=None, quiet=False):
@@ -65,31 +66,6 @@ class GameState():
 			if self.grid[x][y] == 0:
 				self.grid[x][y] = -1
 				t -= 1
-
-		# self.grid[0][0]  = -1
-		# self.grid[0][1]  = -1
-		# self.grid[0][2]  = -1
-		# self.grid[0][3]  = -1
-		# self.grid[0][4]  = -1
-		# self.grid[0][5]  = -1
-		# self.grid[5][0]  = -1
-		# self.grid[5][1]  = -1
-		# self.grid[5][2]  = -1
-		# self.grid[5][3]  = -1
-		# self.grid[5][4]  = -1
-		# self.grid[5][5]  = -1
-		# self.grid[0][0]  = -1
-		# self.grid[1][0]  = -1
-		# self.grid[2][0]  = -1
-		# self.grid[3][0]  = -1
-		# self.grid[4][0]  = -1
-		# self.grid[5][0]  = -1
-		# self.grid[0][5]  = -1
-		# self.grid[1][5]  = -1
-		# self.grid[2][5]  = -1
-		# self.grid[3][5]  = -1
-		# self.grid[5][0]  = -1
-		
 
 
 
@@ -151,26 +127,7 @@ class GameState():
 		i, j = self.pigPositions[pigId]
 		#print "i, j", i, j
 		return (i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1)
-			#print "pig escaped:", pigId
-		# 	self.players[pigId].isEscaped = True
-		# 	return True
-		# else:
-		# 	return False
-
-		# if i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1:
-		# 	for ind, x in enumerate(self.players):
-		# 		if x.isPig:
-		# 			if x.pigId == pigId:
-		# 				bad_pig = self.players.pop(ind)
-		# 				print('b', bad_pig)
-		# 	return True
-		# return False
-		# if(i == 0 or i == self.cols-1 or j == 0 or j == self.rows-1):
-		# 	#self.players.remove()
-		# 	return True
-		# else:
-		# 	return False
-
+	
 	def allPigsEscaped(self):
 		for pigId in range(self.numPigs):
 			if not self.isEscaped(pigId):
@@ -179,11 +136,7 @@ class GameState():
 
 	def isCaptured(self, pigId):
 		return (optimalPigNextStep(self, pigId) is None and not self.isEscaped(pigId))
-			#print "pig captured:", pigId
-			#self.players[pigId].isCaptured = True
-		# 	return True
-		# else:
-		# 	return False
+
 
 	def allPigsCaptured(self):
 		for pigId in range(self.numPigs):
